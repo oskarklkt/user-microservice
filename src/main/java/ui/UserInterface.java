@@ -217,9 +217,9 @@ public class UserInterface {
         System.out.println("Enter city:");
         String city = scanner.next();
         System.out.println("Enter street address 1:");
-        String street1 = scanner.next();
+        String street1 = scanner.nextLine();
         System.out.println("Enter street address 2:");
-        String street2 = scanner.next();
+        String street2 = scanner.nextLine();
         System.out.println("Enter Region:");
         String region = scanner.next();
         System.out.println("Enter postal code:");
