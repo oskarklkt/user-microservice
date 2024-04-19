@@ -291,6 +291,10 @@ public class UserInterface {
         String phoneNumber = scanner.next();
         System.out.println("Enter user email:");
         String email = scanner.next();
+        if (!userController.isEmailInDatabase(email)) {
+            System.out.println("User with this email already exists!");
+            return;
+        }
         System.out.println("Enter user profile photo URL:");
         String profilePhotoUrl = scanner.next();
         if (userController.updateUser(Long.valueOf(id), UserDto.builder()
@@ -302,7 +306,7 @@ public class UserInterface {
                 .phoneNumber(phoneNumber)
                 .profilePhotoUrl(profilePhotoUrl)
                 .build())) {
-            System.out.println("User updated successfully!");
+                System.out.println("User updated successfully!");
         } else {
             System.out.println("User not found!");
         }
