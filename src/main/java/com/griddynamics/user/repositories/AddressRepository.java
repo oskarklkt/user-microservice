@@ -34,4 +34,9 @@ public class AddressRepository {
                 .mapToLong(List::size)
                 .sum() + 1L;
     }
+
+    public boolean isAddressInDatabase(Long userId, Long addressId) {
+        return addresses.get(userId).stream()
+                .anyMatch(address -> address.getId().equals(addressId));
+    }
 }

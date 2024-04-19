@@ -6,15 +6,17 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Setter
+@Builder
+@NoArgsConstructor
 public class Address {
-    @Setter
     private Long id;
-    private final Long userId;
-    private final String country;
-    private final String streetAddress;
-    private final String streetAddress2;
-    private final String city;
-    private final String stateProvinceRegion;
-    private final String zipCode;
-    private final String phoneNumber;
+    private Long userId;
+    private String country;
+    private String streetAddress;
+    private String streetAddress2;
+    private String city;
+    private String stateProvinceRegion;
+    private String zipCode;
+    private String phoneNumber;
 }

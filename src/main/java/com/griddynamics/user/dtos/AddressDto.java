@@ -1,21 +1,29 @@
 package com.griddynamics.user.dtos;
 
+
+import com.google.gson.GsonBuilder;
 import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@ToString
+@Setter
+@NoArgsConstructor
 public class AddressDto {
-    private final Long id;
-    private final String country;
-    private final String name;
-    private final String surname;
-    private final String streetAddress;
-    private final String streetAddress2;
-    private final String city;
-    private final String stateProvinceRegion;
-    private final String zipCode;
-    private final String phoneNumber;
+    private Long userId;
+    private String country;
+    private String name;
+    private String surname;
+    private String streetAddress;
+    private String streetAddress2;
+    private String city;
+    private String stateProvinceRegion;
+    private String zipCode;
+    private String phoneNumber;
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }

@@ -3,6 +3,7 @@ package com.griddynamics.user.mappers;
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.enums.Gender;
 import com.griddynamics.user.models.User;
+import com.griddynamics.user.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,8 @@ class UserDtoMapperTest {
     void userDtoToUser() {
         //when
         User user = UserDtoMapper.INSTANCE.userDtoToUser(userDto);
+        //it happens in @AfterMapping
+        user.setId(UserRepository.getNextId());
         //then
         assertEquals(user, this.user);
     }

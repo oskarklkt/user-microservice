@@ -6,17 +6,18 @@ import com.griddynamics.user.services.Facade;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @AllArgsConstructor
 public class UserController {
     private final Facade facade;
 
-    public void saveUser(UserDto userDto) {
-        facade.saveUser(userDto);
+    public boolean saveUser(UserDto userDto) {
+        return facade.saveUser(userDto);
     }
 
-    public UserDto getUser(Long id) {
+    public Optional<UserDto> getUser(Long id) {
         return facade.getUser(id);
     }
 
@@ -32,8 +33,8 @@ public class UserController {
         return facade.getUserEmail(userId);
     }
 
-    public void deleteUser(Long userId) {
-        facade.deleteUser(userId);
+    public boolean deleteUser(Long userId) {
+        return facade.deleteUser(userId);
     }
 
     public void updateUser(Long userId, UserDto userDto) {
@@ -49,19 +50,19 @@ public class UserController {
         return facade.isUserInDatabase(userId);
     }
 
-    public void addAddress(Long userId, AddressDto addressDto) {
-        facade.addAddress(userId, addressDto);
+    public boolean addAddress(Long userId, AddressDto addressDto) {
+        return facade.addAddress(userId, addressDto);
     }
 
-    public void updateAddress(Long userId, Long addressId,  AddressDto addressDto) {
-        facade.updateAddress(userId, addressId, addressDto);
+    public boolean updateAddress(Long userId, Long addressId, AddressDto addressDto) {
+        return facade.updateAddress(userId, addressId, addressDto);
     }
 
-    public void deleteAddress(Long userId, Long addressId) {
-        facade.deleteAddress(userId, addressId);
+    public boolean deleteAddress(Long userId, Long addressId) {
+        return facade.deleteAddress(userId, addressId);
     }
 
-    public List<AddressDto> getAddresses(Long userId) {
+    public Optional<List<AddressDto>> getAddresses(Long userId) {
         return facade.getAddresses(userId);
     }
 }

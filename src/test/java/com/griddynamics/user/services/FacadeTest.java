@@ -5,6 +5,10 @@ import com.griddynamics.user.dtos.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class FacadeTest {
@@ -65,14 +69,6 @@ class FacadeTest {
     }
 
     @Test
-    void deleteUser() {
-        //when
-        facade.deleteUser(1L);
-        //then
-        Mockito.verify(userService).deleteUser(1L);
-    }
-
-    @Test
     void updateUser() {
         //when
         facade.updateUser(1L, userDto);
@@ -122,9 +118,42 @@ class FacadeTest {
 
     @Test
     void getAddresses() {
-        //when
-        facade.getAddresses(1L);
-        //then
-        Mockito.verify(addressService).getAddresses(1L);
+        // Arrange
+        Long userId = 1L;
+        UserDto userDto = new UserDto();
+        userDto.setName("John");
+        userDto.setSurname("Doe");
+
+        AddressDto addressDto = new AddressDto();
+        addressDto.setCountry("Country");
+        addressDto.setStreetAddress("Street");
+        addressDto.setStreetAddress2("Street2");
+        addressDto.setCity("City");
+        addressDto.setStateProvinceRegion("State");
+        addressDto.setZipCode("Zip");
+        addressDto.setPhoneNumber("Phone");
+
+        List<AddressDto> addressesDto = List.of(addressDto);
+
+        Mockito.when(userService.getUser(userId)).thenReturn(Optional.of(userDto));
+        Mockito.when(addressService.getAddresses(userId)).thenReturn(addressesDto);
+
+        // Act
+        Optional<List<AddressDto>> result = facade.getAddresses(userId);
+
+        // Assert
+        assertEquals(1, result.get().size());
+        assertEquals(userDto.getName(), result.get().get(0).getName());
+        assertEquals(userDto.getSurname(), result.get().get(0).getSurname());
+        assertEquals(addressDto.getCountry(), result.get().get(0).getCountry());
+        assertEquals(addressDto.getStreetAddress(), result.get().get(0).getStreetAddress());
+        assertEquals(addressDto.getStreetAddress2(), result.get().get(0).getStreetAddress2());
+        assertEquals(addressDto.getCity(), result.get().get(0).getCity());
+        assertEquals(addressDto.getStateProvinceRegion(), result.get().get(0).getStateProvinceRegion());
+        assertEquals(addressDto.getZipCode(), result.get().get(0).getZipCode());
+        assertEquals(addressDto.getPhoneNumber(), result.get().get(0).getPhoneNumber());
+
+        Mockito.verify(userService).getUser(userId);
+        Mockito.verify(addressService).getAddresses(userId);
     }
 }

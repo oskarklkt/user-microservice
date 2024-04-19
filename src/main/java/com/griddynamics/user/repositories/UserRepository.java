@@ -16,7 +16,7 @@ public class UserRepository {
     }
 
     public Optional<User> getUser(Long id) {
-        return Optional.of(users.get(id));
+        return Optional.ofNullable(users.get(id));
     }
 
     public Optional<User> getUserByEmail(String email) {
@@ -35,6 +35,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user) {
+        users.remove(user.getId());
         users.put(user.getId(), user);
     }
 

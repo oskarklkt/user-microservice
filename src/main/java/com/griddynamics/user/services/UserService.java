@@ -7,6 +7,7 @@ import com.griddynamics.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -15,14 +16,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
 
-    public void saveUser(UserDto userDto) {
+    public boolean saveUser(UserDto userDto) {
         User user = userDtoMapper.userDtoToUser(userDto);
+        if (userRepository.isEmailInDatabase(user.getEmail())) {
+            return false;
+        }
         userRepository.save(user);
+        return true;
     }
 
-    public UserDto getUser(Long id) {
-        User user = userRepository.getUser(id).orElseThrow(() -> new RuntimeException("User not found"));
-        return userDtoMapper.userToUserDto(user);
+    public Optional<UserDto> getUser(Long id) {
+        User user = userRepository.getUser(id).orElse(null);
+        if (user == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(userDtoMapper.userToUserDto(user));
     }
 
     public UserDto getUserByEmail(String email) {
@@ -46,10 +54,15 @@ public class UserService {
         userRepository.deleteUser(userId);
     }
 
-    public void updateUser(Long userId, UserDto userDto) {
-        User user = userDtoMapper.userDtoToUser(userDto);
-        user.setId(userId);
-        userRepository.updateUser(user);
+    public boolean updateUser(Long userId, UserDto userDto) {
+        if (userRepository.isUserInDatabase(userId)) {
+            User user = userDtoMapper.userDtoToUser(userDto);
+            user.setId(userId);
+            userRepository.updateUser(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean isEmailInDatabase(String email) {

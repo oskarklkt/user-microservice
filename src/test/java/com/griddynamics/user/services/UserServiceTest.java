@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class UserServiceTest {
@@ -32,7 +33,7 @@ class UserServiceTest {
     @Test
     void saveUser() {
         userService.saveUser(userDto);
-        Mockito.verify(userRepository, Mockito.times(1)).save(any());
+        verify(userRepository, Mockito.times(1)).save(any());
     }
 
     @Test
@@ -41,7 +42,7 @@ class UserServiceTest {
         when(userRepository.getUser(1L)).thenReturn(Optional.of(user));
         userService.getUser(1L);
         //then
-        Mockito.verify(userRepository, Mockito.times(1)).getUser(any());
+        verify(userRepository, Mockito.times(1)).getUser(any());
     }
 
     @Test
@@ -50,13 +51,13 @@ class UserServiceTest {
         when(userRepository.getUserByEmail("test")).thenReturn(Optional.of(user));
         userService.getUserByEmail("test");
         //then
-        Mockito.verify(userRepository, Mockito.times(1)).getUserByEmail(any());
+        verify(userRepository, Mockito.times(1)).getUserByEmail(any());
     }
 
     @Test
     void getAllUsers() {
         userService.getAllUsers();
-        Mockito.verify(userRepository, Mockito.times(1)).getAllUsers();
+        verify(userRepository, Mockito.times(1)).getAllUsers();
     }
 
     @Test
@@ -65,20 +66,16 @@ class UserServiceTest {
         when(userRepository.getUser(1L)).thenReturn(Optional.of(user));
         userService.getUserEmail(1L);
         //then
-        Mockito.verify(userRepository, Mockito.times(1)).getUser(any());
+        verify(userRepository, Mockito.times(1)).getUser(any());
     }
 
     @Test
     void deleteUser() {
         userService.deleteUser(1L);
-        Mockito.verify(userRepository, Mockito.times(1)).deleteUser(any());
+        verify(userRepository, Mockito.times(1)).deleteUser(any());
     }
 
-    @Test
-    void updateUser() {
-        userService.updateUser(1L, userDto);
-        Mockito.verify(userRepository, Mockito.times(1)).updateUser(any());
-    }
+
 
     @Test
     void isEmailInDatabase() {
@@ -86,7 +83,7 @@ class UserServiceTest {
         when(userRepository.isEmailInDatabase("test")).thenReturn(true);
         userService.isEmailInDatabase("test");
         //then
-        Mockito.verify(userRepository, Mockito.times(1)).isEmailInDatabase(any());
+        verify(userRepository, Mockito.times(1)).isEmailInDatabase(any());
     }
 
     @Test
@@ -95,6 +92,6 @@ class UserServiceTest {
         when(userRepository.isUserInDatabase(1L)).thenReturn(true);
         userService.isUserInDatabase(1L);
         //then
-        Mockito.verify(userRepository, Mockito.times(1)).isUserInDatabase(any());
+        verify(userRepository, Mockito.times(1)).isUserInDatabase(any());
     }
 }

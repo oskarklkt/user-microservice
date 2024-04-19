@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -13,11 +15,11 @@ public class Facade {
     private final UserService userService;
     private final AddressService addressService;
 
-    public void saveUser(UserDto userDto) {
-        userService.saveUser(userDto);
+    public boolean saveUser(UserDto userDto) {
+        return userService.saveUser(userDto);
     }
 
-    public UserDto getUser(Long id) {
+    public Optional<UserDto> getUser(Long id) {
         return userService.getUser(id);
     }
 
@@ -33,12 +35,16 @@ public class Facade {
         return userService.getUserEmail(userId);
     }
 
-    public void deleteUser(Long userId) {
+    public boolean deleteUser(Long userId) {
+        if (!userService.isUserInDatabase(userId)) {
+            return false;
+        }
         userService.deleteUser(userId);
+        return true;
     }
 
-    public void updateUser(Long userId, UserDto userDto) {
-        userService.updateUser(userId, userDto);
+    public boolean updateUser(Long userId, UserDto userDto) {
+        return userService.updateUser(userId, userDto);
     }
 
 
@@ -50,19 +56,37 @@ public class Facade {
         return userService.isUserInDatabase(userId);
     }
 
-    public void addAddress(Long userId, AddressDto addressDto) {
-        addressService.addAddress(userId, addressDto);
+    public boolean addAddress(Long userId, AddressDto addressDto) {
+        return addressService.addAddress(userId, addressDto);
     }
 
-    public void updateAddress(Long userId, Long addressId, AddressDto addressDto) {
-        addressService.updateAddress(userId, addressId, addressDto);
+    public boolean updateAddress(Long userId, Long addressId, AddressDto addressDto) {
+        return addressService.updateAddress(userId, addressId, addressDto);
     }
 
-    public void deleteAddress(Long userId, Long addressId) {
-        addressService.deleteAddress(userId, addressId);
+    public boolean deleteAddress(Long userId, Long addressId) {
+        return addressService.deleteAddress(userId, addressId);
     }
 
-    public List<AddressDto> getAddresses(Long userId) {
-        return addressService.getAddresses(userId);
+    public Optional<List<AddressDto>> getAddresses(Long userId) {
+        List<AddressDto> addressesDto = addressService.getAddresses(userId);
+        Optional<UserDto> userDto = userService.getUser(userId);
+        if (addressesDto == null || userDto.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(addressesDto.stream()
+                    .map(addressDto -> new AddressDto(
+                            userId,
+                            addressDto.getCountry(),
+                            userDto.get().getName(),
+                            userDto.get().getSurname(),
+                            addressDto.getStreetAddress(),
+                            addressDto.getStreetAddress2(),
+                            addressDto.getCity(),
+                            addressDto.getStateProvinceRegion(),
+                            addressDto.getZipCode(),
+                            addressDto.getPhoneNumber()))
+                    .collect(Collectors.toList()));
+        }
     }
 }

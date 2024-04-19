@@ -32,7 +32,6 @@ public interface AddressDtoMapper {
     Address addressDtoToAddress(AddressDto addressDto);
 
 
-
     @AfterMapping
     default void setAddressId(@MappingTarget Address address) {
         address.setId(AddressRepository.getNextAddressId());

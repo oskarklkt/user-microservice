@@ -1,14 +1,15 @@
 package com.griddynamics.user.dtos;
+
+import com.google.gson.GsonBuilder;
 import com.griddynamics.user.enums.Gender;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
+@Builder
+@Setter
+@NoArgsConstructor
 public class UserDto {
     private String name;
     private String surname;
@@ -17,4 +18,11 @@ public class UserDto {
     private String phoneNumber;
     private String email;
     private String profilePhotoUrl;
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }
+
+
