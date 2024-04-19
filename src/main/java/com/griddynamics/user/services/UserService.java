@@ -26,16 +26,13 @@ public class UserService {
     }
 
     public Optional<UserDto> getUser(Long id) {
-        User user = userRepository.getUser(id).orElse(null);
-        if (user == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(userDtoMapper.userToUserDto(user));
+        return userRepository.getUser(id)
+                .map(userDtoMapper::userToUserDto);
     }
 
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.getUserByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return userDtoMapper.INSTANCE.userToUserDto(user);
+    public Optional<UserDto> getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email)
+                .map(userDtoMapper::userToUserDto);
     }
 
     public List<UserDto> getAllUsers() {
@@ -45,9 +42,9 @@ public class UserService {
                 .collect(toList());
     }
 
-    public String getUserEmail(Long userId) {
-        User user = userRepository.getUser(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return user.getEmail();
+    public Optional<String> getUserEmail(Long userId) {
+        return userRepository.getUser(userId)
+                .map(User::getEmail);
     }
 
     public void deleteUser(Long userId) {

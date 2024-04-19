@@ -5,6 +5,7 @@ import com.griddynamics.user.dtos.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public class Facade {
         return userService.getUser(id);
     }
 
-    public UserDto getUserByEmail(String email) {
+    public Optional<UserDto> getUserByEmail(String email) {
         return userService.getUserByEmail(email);
     }
 
@@ -31,7 +32,7 @@ public class Facade {
         return userService.getAllUsers();
     }
 
-    public String getUserEmail(Long userId) {
+    public Optional<String> getUserEmail(Long userId) {
         return userService.getUserEmail(userId);
     }
 
@@ -69,24 +70,20 @@ public class Facade {
     }
 
     public Optional<List<AddressDto>> getAddresses(Long userId) {
-        List<AddressDto> addressesDto = addressService.getAddresses(userId);
+        List<AddressDto> addressesDto = Optional.ofNullable(addressService.getAddresses(userId)).orElse(Collections.emptyList());
         Optional<UserDto> userDto = userService.getUser(userId);
-        if (addressesDto == null || userDto.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(addressesDto.stream()
-                    .map(addressDto -> new AddressDto(
-                            userId,
-                            addressDto.getCountry(),
-                            userDto.get().getName(),
-                            userDto.get().getSurname(),
-                            addressDto.getStreetAddress(),
-                            addressDto.getStreetAddress2(),
-                            addressDto.getCity(),
-                            addressDto.getStateProvinceRegion(),
-                            addressDto.getZipCode(),
-                            addressDto.getPhoneNumber()))
-                    .collect(Collectors.toList()));
-        }
+        return userDto.map(dto -> addressesDto.stream()
+                .map(addressDto -> new AddressDto(
+                        userId,
+                        addressDto.getCountry(),
+                        dto.getName(),
+                        dto.getSurname(),
+                        addressDto.getStreetAddress(),
+                        addressDto.getStreetAddress2(),
+                        addressDto.getCity(),
+                        addressDto.getStateProvinceRegion(),
+                        addressDto.getZipCode(),
+                        addressDto.getPhoneNumber()))
+                .collect(Collectors.toList()));
     }
 }

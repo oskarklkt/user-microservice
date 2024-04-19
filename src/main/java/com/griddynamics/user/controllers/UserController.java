@@ -21,7 +21,7 @@ public class UserController {
         return facade.getUser(id);
     }
 
-    public UserDto getUserByEmail(String email) {
+    public Optional<UserDto> getUserByEmail(String email) {
         return facade.getUserByEmail(email);
     }
 
@@ -29,7 +29,7 @@ public class UserController {
         return facade.getAllUsers();
     }
 
-    public String getUserEmail(Long userId) {
+    public Optional<String> getUserEmail(Long userId) {
         return facade.getUserEmail(userId);
     }
 
@@ -37,8 +37,8 @@ public class UserController {
         return facade.deleteUser(userId);
     }
 
-    public void updateUser(Long userId, UserDto userDto) {
-        facade.updateUser(userId, userDto);
+    public boolean updateUser(Long userId, UserDto userDto) {
+        return facade.updateUser(userId, userDto);
     }
 
 

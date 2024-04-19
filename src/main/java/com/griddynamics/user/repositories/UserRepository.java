@@ -12,7 +12,7 @@ public class UserRepository {
 
     public void save(User user) {
         user.setId(getNextId());
-        users.put(getNextId(), user);
+        users.put(user.getId(), user);
     }
 
     public Optional<User> getUser(Long id) {
@@ -20,10 +20,9 @@ public class UserRepository {
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return Optional.of(users.values().stream()
+        return users.values().stream()
                 .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("User not found")));
+                .findFirst();
     }
 
     public List<User> getAllUsers() {

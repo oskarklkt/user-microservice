@@ -5,6 +5,7 @@ import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.enums.Gender;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -144,21 +145,33 @@ public class UserInterface {
         System.out.println("Enter user email:");
         Scanner scanner = new Scanner(System.in);
         String email = scanner.next();
-        UserDto userDto = userController.getUserByEmail(email);
-        System.out.println(userDto);
+        Optional<UserDto> userDto = userController.getUserByEmail(email);
+        if (userDto.isEmpty()) {
+            System.out.println("User not found!");
+        } else {
+            System.out.println(userDto);
+        }
     }
 
     private void getAllUsers() {
         System.out.println("All users:");
-        userController.getAllUsers().forEach(System.out::println);
+        List<UserDto> list = userController.getAllUsers();
+        if (list.isEmpty()) {
+            System.out.println("No users found!");
+        } else {
+            list.forEach(System.out::println);
+        }
     }
 
     private void getUserEmail() {
         System.out.println("Enter user id:");
         Scanner scanner = new Scanner(System.in);
         Long id = scanner.nextLong();
-        String email = userController.getUserEmail(id);
-        System.out.println(email);
+        if (!userController.isUserInDatabase(id)) {
+            System.out.println("User not found!");
+        } else {
+            System.out.println(userController.getUserEmail(id).orElse("Email not found!"));
+        }
     }
 
     private void deleteUser() {
@@ -280,7 +293,7 @@ public class UserInterface {
         String email = scanner.next();
         System.out.println("Enter user profile photo URL:");
         String profilePhotoUrl = scanner.next();
-        userController.updateUser(Long.valueOf(id), UserDto.builder()
+        if (userController.updateUser(Long.valueOf(id), UserDto.builder()
                 .name(name)
                 .surname(surname)
                 .gender(gender)
@@ -288,7 +301,11 @@ public class UserInterface {
                 .email(email)
                 .phoneNumber(phoneNumber)
                 .profilePhotoUrl(profilePhotoUrl)
-                .build());
+                .build())) {
+            System.out.println("User updated successfully!");
+        } else {
+            System.out.println("User not found!");
+        }
     }
 
     private void updateAddress() {

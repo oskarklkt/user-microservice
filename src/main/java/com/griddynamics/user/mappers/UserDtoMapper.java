@@ -18,6 +18,4 @@ public interface UserDtoMapper {
     default void setUserId(@MappingTarget User user) {
         user.setId(UserRepository.getNextId());
     }
-
-
 }

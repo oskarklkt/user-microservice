@@ -3,22 +3,21 @@ package com.griddynamics.user.services;
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.mappers.AddressDtoMapper;
 import com.griddynamics.user.models.Address;
-import com.griddynamics.user.models.User;
 import com.griddynamics.user.repositories.AddressRepository;
 import com.griddynamics.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.List;
 
 @AllArgsConstructor
 public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressDtoMapper addressDtoMapper;
     private final UserRepository userRepository;
-
 
     public boolean addAddress(Long userId, AddressDto addressDto) {
         Address address = addressDtoMapper.addressDtoToAddress(addressDto);
@@ -50,22 +49,15 @@ public class AddressService {
     }
 
     public List<AddressDto> getAddresses(Long userId) {
-        if (addressRepository.findAllByUserId(userId) == null) {
-            return null;
+        List<Address> addresses = addressRepository.findAllByUserId(userId);
+        if (addresses == null) {
+            return Collections.emptyList();
         }
-        return addressRepository.findAllByUserId(userId)
-                .stream()
-                .map(address -> {
-                    Optional<User> optionalUser = userRepository.getUser(address.getUserId());
-                    if (optionalUser.isPresent()) {
-                        return addressDtoMapper.addressToAddressDto(address, optionalUser);
-                    } else {
-                        throw new RuntimeException("User not found");
-                    }
-                })
+        return addresses.stream()
+                .map(address -> userRepository.getUser(address.getUserId())
+                        .map(user -> addressDtoMapper.addressToAddressDto(address, Optional.of(user)))
+                        .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
-
-
 }
