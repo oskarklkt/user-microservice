@@ -1,9 +1,10 @@
-package ui;
+package com.griddynamics.user.ui;
 
 import com.griddynamics.user.controllers.UserController;
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.enums.Gender;
+import com.griddynamics.user.repositories.AddressRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -230,7 +231,7 @@ public class UserInterface {
         if (optionalUserDto.isPresent()) {
             UserDto userDto = optionalUserDto.get();
             AddressDto addressDto = AddressDto.builder()
-                    .userId(userId)
+                    .addressId(AddressRepository.getNextAddressId())
                     .country(country)
                     .name(userDto.getName())
                     .surname(userDto.getSurname())
@@ -337,7 +338,7 @@ public class UserInterface {
         if (optionalUserDto.isPresent()) {
             UserDto userDto = optionalUserDto.get();
             AddressDto addressDto = AddressDto.builder()
-                    .userId(userId)
+                    .addressId(addressId)
                     .country(country)
                     .name(userDto.getName())
                     .surname(userDto.getSurname())

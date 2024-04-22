@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class AddressDto {
-    private Long userId;
+    private Long addressId;
     private String country;
     private String name;
     private String surname;

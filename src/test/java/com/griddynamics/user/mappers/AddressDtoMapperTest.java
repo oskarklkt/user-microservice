@@ -54,7 +54,7 @@ class AddressDtoMapperTest {
 
     @Test
     void extractSurname() {
-        String surname = AddressDtoMapper.INSTANCE.extractSurname(userRepository.getUser(1L));
+        String surname = AddressDtoMapper.INSTANCE.extractSurname(address);
         assertEquals(surname, "test");
     }
 

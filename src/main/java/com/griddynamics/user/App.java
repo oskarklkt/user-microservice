@@ -10,7 +10,7 @@ import com.griddynamics.user.services.Facade;
 import com.griddynamics.user.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import ui.UserInterface;
+import com.griddynamics.user.ui.UserInterface;
 
 @AllArgsConstructor
 @Builder

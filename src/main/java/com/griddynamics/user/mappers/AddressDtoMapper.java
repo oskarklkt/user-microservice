@@ -23,8 +23,8 @@ public interface AddressDtoMapper {
     }
 
     @Named("extractSurname")
-    default String extractSurname(Optional<User> user) {
-        return user.map(User::getSurname).orElse(null);
+    default String extractSurname(Address address) {
+        return UserRepository.getUsers().get(address.getUserId()).getSurname();
     }
 
     AddressDto addressToAddressDto(Address address, Optional<User> user);
