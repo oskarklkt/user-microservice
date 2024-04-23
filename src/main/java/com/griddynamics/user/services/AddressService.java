@@ -19,24 +19,16 @@ public class AddressService {
     private final AddressDtoMapper addressDtoMapper;
     private final UserRepository userRepository;
 
-    public boolean addAddress(Long userId, AddressDto addressDto) {
+    public AddressDto addAddress(Long userId, AddressDto addressDto) {
         Address address = addressDtoMapper.addressDtoToAddress(addressDto);
-        if (userRepository.isUserInDatabase(userId)) {
-            addressRepository.save(userId, address);
-            return true;
-        } else {
-            return false;
-        }
+        addressRepository.save(userId, address);
+        return addressDto;
     }
 
-    public boolean updateAddress(Long userId, Long addressId, AddressDto addressDto) {
-        if (!userRepository.isUserInDatabase(userId) || !addressRepository.isAddressInDatabase(userId, addressId)) {
-            return false;
-        }
-        Address address = addressDtoMapper.addressDtoToAddress(addressDto);
+    public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
         addressRepository.deleteAddress(userId, addressId);
-        addressRepository.save(userId, address);
-        return true;
+        addressRepository.save(userId, addressDtoMapper.addressDtoToAddress(addressDto));
+        return addressDto;
     }
 
     public boolean deleteAddress(Long userId, Long addressId) {

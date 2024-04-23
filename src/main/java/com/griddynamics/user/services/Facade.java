@@ -2,29 +2,39 @@ package com.griddynamics.user.services;
 
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.dtos.UserDto;
+import com.griddynamics.user.exceptions.NoSuchElementException;
+import com.griddynamics.user.exceptions.UserException;
+import com.griddynamics.user.validator.AddressValidator;
+import com.griddynamics.user.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 public class Facade {
     private final UserService userService;
     private final AddressService addressService;
+    private final UserValidator userValidator;
+    private final AddressValidator addressValidator;
 
-    public boolean saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) {
+        if (!userValidator.isUserDtoValid(userDto)) {
+            throw new UserException("User data is not valid");
+        } else if (userService.isEmailInDatabase(userDto.getEmail())) {
+            throw new UserException("User with this email already exists");
+        }
         return userService.saveUser(userDto);
     }
 
-    public Optional<UserDto> getUser(Long id) {
+    public UserDto getUser(Long id) {
         return userService.getUser(id);
     }
 
-    public Optional<UserDto> getUserByEmail(String email) {
+    public UserDto getUserByEmail(String email) {
         return userService.getUserByEmail(email);
     }
 
@@ -32,19 +42,23 @@ public class Facade {
         return userService.getAllUsers();
     }
 
-    public Optional<String> getUserEmail(Long userId) {
+    public String getUserEmail(Long userId) {
         return userService.getUserEmail(userId);
     }
 
-    public boolean deleteUser(Long userId) {
-        if (!userService.isUserInDatabase(userId)) {
-            return false;
+    public void deleteUser(Long userId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
         }
         userService.deleteUser(userId);
-        return true;
     }
 
-    public boolean updateUser(Long userId, UserDto userDto) {
+    public UserDto updateUser(Long userId, UserDto userDto) {
+        if (!userValidator.isUserDtoValid(userDto)) {
+            throw new UserException("User data is not valid");
+        } else if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
         return userService.updateUser(userId, userDto);
     }
 
@@ -53,37 +67,44 @@ public class Facade {
         return userService.isEmailInDatabase(email);
     }
 
-    public boolean isUserInDatabase(Long userId) {
-        return userService.isUserInDatabase(userId);
+    public UserDto isUserInDatabase(Long userId) {
+        return userService.getUser(userId);
     }
 
-    public boolean addAddress(Long userId, AddressDto addressDto) {
+    public AddressDto addAddress(Long userId, AddressDto addressDto) {
+        if (!addressValidator.validateAddress(addressDto)) {
+            throw new UserException("Address data is not valid");
+        } else if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
         return addressService.addAddress(userId, addressDto);
     }
 
-    public boolean updateAddress(Long userId, Long addressId, AddressDto addressDto) {
+    public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
+        if (!addressValidator.validateAddress(addressDto)) {
+            throw new UserException("Address data is not valid");
+        } else if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
         return addressService.updateAddress(userId, addressId, addressDto);
     }
 
-    public boolean deleteAddress(Long userId, Long addressId) {
-        return addressService.deleteAddress(userId, addressId);
+    public void deleteAddress(Long userId, Long addressId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
+        addressService.deleteAddress(userId, addressId);
     }
 
-    public Optional<List<AddressDto>> getAddresses(Long userId) {
+    public List<AddressDto> getAddresses(Long userId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
         List<AddressDto> addressesDto = Optional.ofNullable(addressService.getAddresses(userId)).orElse(Collections.emptyList());
-        Optional<UserDto> userDto = userService.getUser(userId);
-        return userDto.map(dto -> addressesDto.stream()
-                .map(addressDto -> new AddressDto(
-                        userId,
-                        addressDto.getCountry(),
-                        dto.getName(),
-                        dto.getSurname(),
-                        addressDto.getStreetAddress(),
-                        addressDto.getStreetAddress2(),
-                        addressDto.getCity(),
-                        addressDto.getStateProvinceRegion(),
-                        addressDto.getZipCode(),
-                        addressDto.getPhoneNumber()))
-                .collect(Collectors.toList()));
+        UserDto userDto = userService.getUser(userId);
+        addressesDto.forEach(addressDto -> addressDto.setName(userDto.getName()));
+        addressesDto.forEach(addressDto -> addressDto.setSurname(userDto.getSurname()));
+        return addressesDto;
     }
+
 }

@@ -86,12 +86,5 @@ class UserServiceTest {
         verify(userRepository, Mockito.times(1)).isEmailInDatabase(any());
     }
 
-    @Test
-    void isUserInDatabase() {
-        //when
-        when(userRepository.isUserInDatabase(1L)).thenReturn(true);
-        userService.isUserInDatabase(1L);
-        //then
-        verify(userRepository, Mockito.times(1)).isUserInDatabase(any());
-    }
+
 }

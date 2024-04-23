@@ -82,7 +82,7 @@ class UserRepositoryTest {
         userRepository.save(user);
         //when
         User updatedUser = new User(1L,"test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
-        userRepository.updateUser(updatedUser);
+        userRepository.updateUser(1L, updatedUser);
         //then
         assertEquals(updatedUser, userRepository.getUser(1L).get());
     }

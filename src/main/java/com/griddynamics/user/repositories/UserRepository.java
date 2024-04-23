@@ -33,9 +33,11 @@ public class UserRepository {
         users.remove(userId);
     }
 
-    public void updateUser(User user) {
-        users.remove(user.getId());
-        users.put(user.getId(), user);
+    public User updateUser(Long userId, User user) {
+        users.remove(userId);
+        user.setId(userId);
+        users.put(userId, user);
+        return user;
     }
 
     public boolean isEmailInDatabase(String email) {
@@ -50,4 +52,5 @@ public class UserRepository {
     public static Long getNextId() {
         return users.size() + 1L;
     }
+
 }

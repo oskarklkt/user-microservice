@@ -7,7 +7,7 @@ import com.griddynamics.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import static java.util.stream.Collectors.toList;
 
@@ -16,23 +16,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
 
-    public boolean saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) {
         User user = userDtoMapper.userDtoToUser(userDto);
-        if (userRepository.isEmailInDatabase(user.getEmail())) {
-            return false;
-        }
         userRepository.save(user);
-        return true;
+        return userDto;
     }
 
-    public Optional<UserDto> getUser(Long id) {
-        return userRepository.getUser(id)
-                .map(userDtoMapper::userToUserDto);
+    public UserDto getUser(Long id) {
+        return userRepository.getUser(id).map(userDtoMapper::userToUserDto).orElseThrow(() -> new NoSuchElementException("User not found"));
+
     }
 
-    public Optional<UserDto> getUserByEmail(String email) {
+    public UserDto getUserByEmail(String email) {
         return userRepository.getUserByEmail(email)
-                .map(userDtoMapper::userToUserDto);
+                .map(userDtoMapper::userToUserDto)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
     public List<UserDto> getAllUsers() {
@@ -42,31 +40,22 @@ public class UserService {
                 .collect(toList());
     }
 
-    public Optional<String> getUserEmail(Long userId) {
-        return userRepository.getUser(userId)
-                .map(User::getEmail);
+    public String getUserEmail(Long userId) {
+        return String.valueOf(userRepository.getUser(userId)
+                .map(User::getEmail));
     }
 
     public void deleteUser(Long userId) {
         userRepository.deleteUser(userId);
     }
 
-    public boolean updateUser(Long userId, UserDto userDto) {
-        if (userRepository.isUserInDatabase(userId)) {
-            User user = userDtoMapper.userDtoToUser(userDto);
-            user.setId(userId);
-            userRepository.updateUser(user);
-            return true;
-        } else {
-            return false;
-        }
+    public UserDto updateUser(Long userId, UserDto userDto) {
+        userRepository.updateUser(userId, userDtoMapper.userDtoToUser(userDto));
+        return userDto;
+
     }
 
     public boolean isEmailInDatabase(String email) {
         return userRepository.isEmailInDatabase(email);
-    }
-
-    public boolean isUserInDatabase(Long userId) {
-        return userRepository.isUserInDatabase(userId);
     }
 }
