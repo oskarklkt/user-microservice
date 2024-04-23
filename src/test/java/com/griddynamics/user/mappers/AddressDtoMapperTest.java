@@ -35,6 +35,7 @@ class AddressDtoMapperTest {
     @Test
     void addressToAddressDto() {
         AddressDto addressDto1 = AddressDtoMapper.INSTANCE.addressToAddressDto(address, userRepository.getUser(1L));
+        System.out.println(addressDto1);
         assertEquals(addressDto1, addressDto);
     }
 

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class AddressService {
-    //todo UPDATE THIS CLASS TO THROW EXCEPTIONS WHEN NEEDED
     private final AddressRepository addressRepository;
     private final AddressDtoMapper addressDtoMapper;
     private final UserRepository userRepository;
