@@ -1,15 +1,18 @@
 package com.griddynamics.user.services;
 
 import com.griddynamics.user.dtos.AddressDto;
+import com.griddynamics.user.exceptions.BaseException;
 import com.griddynamics.user.mappers.AddressDtoMapper;
 import com.griddynamics.user.mappers.AddressMapper;
 import com.griddynamics.user.models.Address;
+import com.griddynamics.user.models.User;
 import com.griddynamics.user.repositories.AddressRepository;
 import com.griddynamics.user.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,11 +49,11 @@ public class AddressService {
         if (addresses == null) {
             return Collections.emptyList();
         }
+        User user = userRepository.getUser(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
         return addresses.stream()
-                .map(address -> userRepository.getUser(address.getUserId())
-                        .map(user -> addressDtoMapper.apply(user, address))
-                        .orElse(null))
-                .filter(Objects::nonNull)
+                .map(address -> addressDtoMapper.apply(user, address))
                 .collect(Collectors.toList());
+
+
     }
 }

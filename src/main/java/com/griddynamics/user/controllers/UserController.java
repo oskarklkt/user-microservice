@@ -118,7 +118,7 @@ public class UserController {
 
     public List<AddressDto> getAddresses(Long userId) {
         try {
-            facade.getAddresses(userId);
+            return facade.getAddresses(userId);
         } catch (BaseException e) {
             log.error("{} | {}", e.getMessage(), e.getStatusCode());
         }
