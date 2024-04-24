@@ -4,9 +4,6 @@ import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.enums.Gender;
 import com.griddynamics.user.models.Address;
 import com.griddynamics.user.models.User;
-import com.griddynamics.user.repositories.AddressRepository;
-import com.griddynamics.user.repositories.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,55 +11,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AddressDtoMapperTest {
 
-    Address address;
-    AddressDto addressDto;
-    UserRepository userRepository;
-    User user;
+    private User user;
+    private Address address;
+    private AddressDto addressDto;
 
     @BeforeEach
     void setUp() {
-        address = new Address(1L, 1L, "test", "test", "test", "test", "test", "test", "test");
-        addressDto = new AddressDto(1L, "test", null, null, "test", "test", "test", "test", "test", "test");
-        user = new User(1L, "test", "test",Gender.MALE, "test", "test", "test", "test");
-        userRepository = new UserRepository();
-        UserRepository.getUsers().put(1L, user);
+        user = User.builder()
+                .id(1L)
+                .name("John")
+                .surname("Doe")
+                .email("JohnDoe@gmail.com")
+                .gender(Gender.MALE)
+                .birthday("01.01.1990")
+                .phoneNumber("+1234567890")
+                .profilePhotoUrl("https://example.com")
+                .build();
+        address = Address.builder()
+                .id(1L)
+                .userId(1L)
+                .country("USA")
+                .streetAddress("Wall Street")
+                .streetAddress2("5")
+                .city("New York")
+                .stateProvinceRegion("NY")
+                .zipCode("10005")
+                .phoneNumber("+1234567890")
+                .build();
+        addressDto = AddressDto.builder()
+                .userId(1L)
+                .country("USA")
+                .name("John")
+                .surname("Doe")
+                .streetAddress("Wall Street")
+                .streetAddress2("5")
+                .city("New York")
+                .stateProvinceRegion("NY")
+                .zipCode("10005")
+                .phoneNumber("+1234567890")
+                .build();
     }
 
-    @AfterEach
-    void tearDown() {
-        UserRepository.getUsers().clear();
-    }
-    @Test
-    void addressToAddressDto() {
-        AddressDto addressDto1 = AddressDtoMapper.INSTANCE.addressToAddressDto(address, userRepository.getUser(1L));
-        System.out.println(addressDto1);
-        assertEquals(addressDto1, addressDto);
-    }
 
     @Test
-    void addressDtoToAddress() {
-        Address address1 = AddressDtoMapper.INSTANCE.addressDtoToAddress(addressDto);
-        //happens in @AfterMapping
-        address1.setId(AddressRepository.getNextAddressId());
-        assertEquals(address1, address);
-    }
-
-    @Test
-    void extractName() {
-        String name = AddressDtoMapper.INSTANCE.extractName(address);
-        assertEquals(name, "test");
-    }
-
-    @Test
-    void extractSurname() {
-        String surname = AddressDtoMapper.INSTANCE.extractSurname(userRepository.getUser(1L));
-        assertEquals(surname, "test");
-    }
-
-    @Test
-    void setAddressId() {
-        Address address1 = new Address(1L, 1L, "test", "test", "test", "test", "test", "test", "test");
-        AddressDtoMapper.INSTANCE.setAddressId(address1);
-        assertEquals(address1.getId(), 1L);
+    void apply() {
+        assertEquals(addressDto, new AddressDtoMapper().apply(user, address));
     }
 }

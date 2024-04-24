@@ -30,10 +30,4 @@ public class AddressRepository {
                 .mapToLong(List::size)
                 .sum() + 1L;
     }
-
-    public boolean isAddressInDatabase(Long userId, Long addressId) {
-        List<Address> userAddresses = addresses.get(userId);
-        return userAddresses != null && userAddresses.stream()
-                .anyMatch(address -> address.getId().equals(addressId));
-    }
 }

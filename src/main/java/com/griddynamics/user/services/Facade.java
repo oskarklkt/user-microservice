@@ -2,6 +2,7 @@ package com.griddynamics.user.services;
 
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.dtos.UserDto;
+import com.griddynamics.user.exceptions.AddressException;
 import com.griddynamics.user.exceptions.NoSuchElementException;
 import com.griddynamics.user.exceptions.UserException;
 import com.griddynamics.user.validator.AddressValidator;
@@ -31,6 +32,9 @@ public class Facade {
     }
 
     public UserDto getUser(Long id) {
+        if (!userValidator.isUserInDatabase(id)) {
+            throw new NoSuchElementException("User not found");
+        }
         return userService.getUser(id);
     }
 
@@ -43,6 +47,9 @@ public class Facade {
     }
 
     public String getUserEmail(Long userId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
         return userService.getUserEmail(userId);
     }
 
@@ -73,7 +80,7 @@ public class Facade {
 
     public AddressDto addAddress(Long userId, AddressDto addressDto) {
         if (!addressValidator.validateAddress(addressDto)) {
-            throw new UserException("Address data is not valid");
+            throw new AddressException("Address data is not valid");
         } else if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
@@ -82,7 +89,7 @@ public class Facade {
 
     public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
         if (!addressValidator.validateAddress(addressDto)) {
-            throw new UserException("Address data is not valid");
+            throw new AddressException("Address data is not valid");
         } else if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }

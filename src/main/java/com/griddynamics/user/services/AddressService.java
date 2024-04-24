@@ -2,6 +2,7 @@ package com.griddynamics.user.services;
 
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.mappers.AddressDtoMapper;
+import com.griddynamics.user.mappers.AddressMapper;
 import com.griddynamics.user.models.Address;
 import com.griddynamics.user.repositories.AddressRepository;
 import com.griddynamics.user.repositories.UserRepository;
@@ -10,24 +11,24 @@ import lombok.AllArgsConstructor;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressDtoMapper addressDtoMapper;
+    private final AddressMapper addressMapper;
     private final UserRepository userRepository;
 
     public AddressDto addAddress(Long userId, AddressDto addressDto) {
-        Address address = addressDtoMapper.addressDtoToAddress(addressDto);
+        Address address = addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto);
         addressRepository.save(userId, address);
         return addressDto;
     }
 
     public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
         addressRepository.deleteAddress(userId, addressId);
-        addressRepository.save(userId, addressDtoMapper.addressDtoToAddress(addressDto));
+        addressRepository.save(userId, addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto));
         return addressDto;
     }
 
@@ -47,7 +48,7 @@ public class AddressService {
         }
         return addresses.stream()
                 .map(address -> userRepository.getUser(address.getUserId())
-                        .map(user -> addressDtoMapper.addressToAddressDto(address, Optional.of(user)))
+                        .map(user -> addressDtoMapper.apply(user, address))
                         .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

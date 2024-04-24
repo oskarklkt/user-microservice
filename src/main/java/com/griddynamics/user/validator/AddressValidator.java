@@ -21,7 +21,7 @@ public class AddressValidator {
     }
 
     private boolean validatePhoneNumber(String phoneNumber) {
-        return phoneNumber.matches("^\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        return phoneNumber.matches("^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?(-?\\s?[0-9])+$");
     }
 
     private boolean validateStateProvinceRegion(String stateProvinceRegion) {
@@ -51,7 +51,6 @@ public class AddressValidator {
                 validateStreetAddress2(addressDto.getStreetAddress2()) &&
                 validateZipCode(addressDto.getZipCode());
     }
-
 
 
 }

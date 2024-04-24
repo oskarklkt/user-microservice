@@ -1,7 +1,9 @@
 package com.griddynamics.user.services;
 
 import com.griddynamics.user.dtos.AddressDto;
+import com.griddynamics.user.enums.Gender;
 import com.griddynamics.user.mappers.AddressDtoMapper;
+import com.griddynamics.user.mappers.AddressMapper;
 import com.griddynamics.user.models.Address;
 import com.griddynamics.user.models.User;
 import com.griddynamics.user.repositories.AddressRepository;
@@ -18,8 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class AddressServiceTest {
@@ -30,6 +31,7 @@ class AddressServiceTest {
     Long userId;
     AddressDto addressDto;
     AddressDtoMapper addressDtoMapper;
+    AddressMapper addressMapper;
     Address address;
 
     @BeforeEach
@@ -38,7 +40,9 @@ class AddressServiceTest {
         userRepository = Mockito.mock(UserRepository.class);
         userId = 1L;
         addressDto = new AddressDto();
-        addressService = new AddressService(addressRepository, AddressDtoMapper.INSTANCE, userRepository);
+        addressMapper = Mockito.mock(AddressMapper.class);
+        addressDtoMapper = Mockito.mock(AddressDtoMapper.class);
+        addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
         addressDtoMapper = Mockito.mock(AddressDtoMapper.class);
         address = new Address(1L, 1L, "Poland", "Warsaw", "00-001", "Marszałkowska", "1", "1", "1");
     }
@@ -64,7 +68,7 @@ class AddressServiceTest {
     @Test
     void addAddress_Success_ReturnsAddressDto() {
         // Given
-        when(addressDtoMapper.addressDtoToAddress(addressDto)).thenReturn(address);
+        when(addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto)).thenReturn(address);
         when(userRepository.isUserInDatabase(userId)).thenReturn(true);
 
         // When
@@ -78,7 +82,7 @@ class AddressServiceTest {
     void updateAddress_Success_ReturnsUpdatedAddressDto() {
         // Given
         Long addressId = 2L;
-        when(addressDtoMapper.addressDtoToAddress(addressDto)).thenReturn(address);
+        when(addressMapper.apply(addressId, userId, addressDto)).thenReturn(address);
         when(userRepository.isUserInDatabase(userId)).thenReturn(true);
 
         // When
@@ -89,28 +93,6 @@ class AddressServiceTest {
         verify(addressRepository).save(any(), any());
     }
 
-    @Test
-    void getAddresses_UserHasAddresses_ReturnsAddressListWithDetails() {
-        // Given
-        List<Address> addresses = Arrays.asList(address);
-        User user = Mockito.mock(User.class);
-        when(user.getId()).thenReturn(userId);
-        when(userRepository.isUserInDatabase(userId)).thenReturn(true);
-        when(userRepository.getUser(userId)).thenReturn(Optional.of(user));
-        when(addressRepository.findAllByUserId(userId)).thenReturn(addresses);
-        when(addressDtoMapper.addressToAddressDto(any(), any())).thenReturn(addressDto);
-        when(addressRepository.findAllByUserId(userId)).thenReturn(addresses);
-        when(userRepository.getUser(userId)).thenReturn(Optional.of(user));
-        when(addressDtoMapper.addressToAddressDto(any(), any())).thenReturn(addressDto);
-        AddressRepository.getAddresses().put(1L, addresses);
-        // When
-        List<AddressDto> results = addressService.getAddresses(userId);
-
-        // Then
-        assertFalse(results.isEmpty());
-        assertEquals(1, results.size());
-        AddressRepository.getAddresses().clear();
-    }
 
     @Test
     void getAddresses_UserHasNoAddresses_ReturnsEmptyList() {

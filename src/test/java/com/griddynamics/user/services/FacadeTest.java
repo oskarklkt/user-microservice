@@ -3,28 +3,25 @@ package com.griddynamics.user.services;
 import com.griddynamics.user.dtos.AddressDto;
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.enums.Gender;
+import com.griddynamics.user.exceptions.AddressException;
 import com.griddynamics.user.exceptions.UserException;
+import com.griddynamics.user.repositories.AddressRepository;
+import com.griddynamics.user.repositories.UserRepository;
 import com.griddynamics.user.validator.AddressValidator;
 import com.griddynamics.user.validator.UserValidator;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.NoSuchElementException;
 
 class FacadeTest {
 
@@ -45,6 +42,11 @@ class FacadeTest {
         userValidator = Mockito.mock(UserValidator.class);
         addressValidator = Mockito.mock(AddressValidator.class);
         facade = new Facade(userService, addressService, userValidator, addressValidator);
+    }
+
+    @AfterEach
+    void tearDown() {
+        UserRepository.getUsers().clear();
     }
 
     @Test
@@ -121,7 +123,7 @@ class FacadeTest {
         when(addressValidator.validateAddress(addressDto)).thenReturn(false);
 
         // Execute & Verify
-        assertThrows(UserException.class, () -> facade.addAddress(userId, addressDto));
+        assertThrows(AddressException.class, () -> facade.addAddress(userId, addressDto));
     }
 
     @Test
@@ -158,6 +160,7 @@ class FacadeTest {
     @Test
     void getUser() {
         //when
+        when(userValidator.isUserInDatabase(1L)).thenReturn(true);
         facade.getUser(1L);
         //then
         Mockito.verify(userService).getUser(1L);
@@ -182,6 +185,7 @@ class FacadeTest {
     @Test
     void getUserEmail() {
         //when
+        when(userValidator.isUserInDatabase(1L)).thenReturn(true);
         facade.getUserEmail(1L);
         //then
         Mockito.verify(userService).getUserEmail(1L);

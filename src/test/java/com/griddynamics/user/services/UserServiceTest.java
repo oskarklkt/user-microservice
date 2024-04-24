@@ -3,6 +3,7 @@ package com.griddynamics.user.services;
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.enums.Gender;
 import com.griddynamics.user.mappers.UserDtoMapper;
+import com.griddynamics.user.mappers.UserMapper;
 import com.griddynamics.user.models.User;
 import com.griddynamics.user.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,6 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,7 +25,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository, UserDtoMapper.INSTANCE);
+        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper());
         userDto = new UserDto("test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
         user = new User(1L, "test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
     }

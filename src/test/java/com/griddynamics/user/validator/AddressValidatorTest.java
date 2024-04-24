@@ -24,8 +24,8 @@ class AddressValidatorTest {
 
     @Test
     void validateAddress_WhenInvalidAddress_ReturnsFalse() {
-        AddressDto addressDto = new AddressDto(1L, "", "John", "Doe", "123 Main St",
-                "street2", "new", "some", "44323", "10001");
+        AddressDto addressDto = new AddressDto(1L, "Poland", "John", "Doe", "123 Main St",
+                "street2", "new", "some", "4fesfs323", "10001");
         assertFalse(validator.validateAddress(addressDto));
     }
 }

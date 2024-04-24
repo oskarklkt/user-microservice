@@ -2,20 +2,19 @@ package com.griddynamics.user.mappers;
 
 import com.griddynamics.user.dtos.UserDto;
 import com.griddynamics.user.models.User;
-import com.griddynamics.user.repositories.UserRepository;
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
-public interface UserDtoMapper {
-    UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
+import java.util.function.Function;
 
-    UserDto userToUserDto(User user);
-
-    User userDtoToUser(UserDto userDto);
-
-    @AfterMapping
-    default void setUserId(@MappingTarget User user) {
-        user.setId(UserRepository.getNextId());
+public class UserDtoMapper implements Function<User, UserDto> {
+    @Override
+    public UserDto apply(User user) {
+        return UserDto.builder()
+                .name(user.getName())
+                .surname(user.getSurname())
+                .gender(user.getGender())
+                .birthday(user.getBirthday())
+                .phoneNumber(user.getPhoneNumber())
+                .email(user.getEmail())
+                .profilePhotoUrl(user.getProfilePhotoUrl()).build();
     }
 }
