@@ -190,6 +190,8 @@ public class UserInterface {
     private String phoneNumber;
      */
     public void addAddress() {
+        System.out.println("Enter User ID:");
+        Long userId = scanner.nextLong();
         System.out.println("Enter Country:");
         String country = scanner.nextLine();
         System.out.println("Enter Name:");
@@ -209,6 +211,7 @@ public class UserInterface {
         System.out.println("Enter Phone Number:");
         String phoneNumber = scanner.nextLine();
         AddressDto addressDto = AddressDto.builder()
+                .userId(userId)
                 .country(country)
                 .name(name)
                 .surname(surname)
