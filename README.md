@@ -1,7 +1,24 @@
 # User Microservice
 
 ---
+## Quick start
+1. Clone this repository
+2. Create .env file with the following content:
+```properties
+DB_PORT={Your localhost port when you want to run db}
+DB_USER={Postgres db username}
+DB_PASSWORD={Postgres db password}
+```
+3. Run the following commands (Assuming you are using mac and have homebrew installed):
+```shell
+brew install colima
+brew install docker
+brew install docker-compose
+docker-compose -f "docker-compose-postgres.yml" up 
+```
+4. Check if it worked fine using for example DBeaver - if test connection with given in .env file works, then it is fine.
 
+---
 ## Responsibilities
 ### Other Microservices: 
 - Return user information by userId/email : User
