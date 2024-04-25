@@ -72,12 +72,12 @@
 ```
 ---
 ## Endpoints
-![Endpoints1.png](Endpoints1.png)
+![Endpoints1](/uploads/a066a357d7d75f7f76a88d48d7c40595/Endpoints1.png)
 
-![Endpoints3.png](Endpoints3.png)
+![Endpoints3](/uploads/e3d08b0319f43ef3643d27a608a215dc/Endpoints3.png)
 
 ---
 
 ## Class Diagram
 
-![image.webp](image.webp)
+![image](/uploads/f16a18483577cad37b45cb99fde4f6a5/image.webp)
