@@ -28,6 +28,7 @@ docker-compose -f "docker-compose-postgres.yml" up
 - Return user address list by userId/email : List<address>
 - Return user email address by userId : email
 - Return admins list
+- Return Discount info to discount service (Client type, date of acc creation)
 
 ---
 ## Models
@@ -98,3 +99,15 @@ docker-compose -f "docker-compose-postgres.yml" up
 ## Class Diagram
 
 ![image](/uploads/f16a18483577cad37b45cb99fde4f6a5/image.webp)
+
+---
+
+## Database Entity Relationship Diagram
+![Gridhub_User_Microservice-2024-04-26_13-04](/uploads/5d5a0407eb518efca5bc7a7a41552096/Gridhub_User_Microservice-2024-04-26_13-04.png)
+---
+
+## Test Coverage
+
+soon :) 
+
+---
