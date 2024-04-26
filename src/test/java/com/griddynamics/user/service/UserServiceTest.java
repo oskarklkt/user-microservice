@@ -1,7 +1,9 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.mapper.ClientDiscountInfoDtoMapper;
 import com.griddynamics.user.mapper.UserDtoMapper;
 import com.griddynamics.user.mapper.UserMapper;
 import com.griddynamics.user.model.User;
@@ -25,9 +27,9 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper());
+        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper(), new ClientDiscountInfoDtoMapper());
         userDto = new UserDto("test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
-        user = new User(1L, "test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
+        user = new User(1L, "test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC);
     }
 
     @Test

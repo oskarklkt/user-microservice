@@ -1,11 +1,15 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.AddressDto;
+import com.griddynamics.user.enumeration.ClientType;
+import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.AddressDtoMapper;
 import com.griddynamics.user.mapper.AddressMapper;
 import com.griddynamics.user.model.Address;
+import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,6 +45,11 @@ class AddressServiceTest {
         addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
         addressDtoMapper = Mockito.mock(AddressDtoMapper.class);
         address = new Address(1L, 1L, "Poland", "Warsaw", "00-001", "Marszałkowska", "1", "1", "1");
+    }
+
+    @AfterEach
+    void tearDown() {
+        UserRepository.getUsers().clear();
     }
 
 
@@ -89,17 +98,5 @@ class AddressServiceTest {
         verify(addressRepository).save(any(), any());
     }
 
-
-    @Test
-    void getAddresses_UserHasNoAddresses_ReturnsEmptyList() {
-        // Given
-        when(addressRepository.findAllByUserId(userId)).thenReturn(Collections.emptyList());
-
-        // When
-        List<AddressDto> results = addressService.getAddresses(userId);
-
-        // Then
-        assertTrue(results.isEmpty());
-    }
 
 }

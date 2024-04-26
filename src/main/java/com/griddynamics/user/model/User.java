@@ -1,6 +1,7 @@
 package com.griddynamics.user.model;
 
 import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.enumeration.ClientType;
 import lombok.*;
 
 
@@ -19,4 +20,6 @@ public class User {
     private String phoneNumber;
     private String email;
     private String profilePhotoUrl;
+    private String dateOfAccountCreation;
+    private ClientType clientType;
 }

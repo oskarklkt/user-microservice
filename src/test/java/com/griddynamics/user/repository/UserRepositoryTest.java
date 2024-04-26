@@ -1,5 +1,6 @@
 package com.griddynamics.user.repository;
 
+import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.model.User;
 import org.junit.jupiter.api.AfterEach;
@@ -16,7 +17,7 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         userRepository = new UserRepository();
-        user = new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
+        user = new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC );
     }
 
     @AfterEach
@@ -60,7 +61,7 @@ class UserRepositoryTest {
         //given
         userRepository.save(user);
         //when
-        userRepository.save(new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+1234w56789", "test@gmail.com", "url"));
+        userRepository.save(new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+1234w56789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC));
         //then
         assertEquals(2, userRepository.getAllUsers().size());
     }
@@ -80,7 +81,7 @@ class UserRepositoryTest {
         //given
         userRepository.save(user);
         //when
-        User updatedUser = new User(1L,"test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
+        User updatedUser = new User(1L,"test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC);
         userRepository.updateUser(1L, updatedUser);
         //then
         assertEquals(updatedUser, userRepository.getUser(1L).get());

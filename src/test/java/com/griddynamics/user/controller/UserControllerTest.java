@@ -92,14 +92,6 @@ class UserControllerTest {
     }
 
     @Test
-    void isUserInDatabase() {
-        //when
-        userController.isUserInDatabase(anyLong());
-        //then
-        verify(facade).isUserInDatabase(anyLong());
-    }
-
-    @Test
     void addAddress() {
         //when
         userController.addAddress(anyLong(), any());

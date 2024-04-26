@@ -1,6 +1,7 @@
 package com.griddynamics.user.repository;
 
 
+import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.model.User;
 import lombok.Getter;
 
@@ -12,6 +13,8 @@ public class UserRepository {
 
     public void save(User user) {
         user.setId(getNextId());
+        user.setDateOfAccountCreation(String.valueOf(java.time.LocalDate.now()));
+        user.setClientType(ClientType.BASIC);
         users.put(user.getId(), user);
     }
 
@@ -53,4 +56,9 @@ public class UserRepository {
         return users.size() + 1L;
     }
 
+    public void setUserVip(Long userId) {
+        User user = users.get(userId);
+        user.setClientType(ClientType.VIP);
+        users.put(userId, user);
+    }
 }

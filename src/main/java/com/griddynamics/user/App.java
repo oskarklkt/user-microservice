@@ -4,10 +4,7 @@ import com.griddynamics.user.controller.UserController;
 import com.griddynamics.user.dto.AddressDto;
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.mapper.AddressDtoMapper;
-import com.griddynamics.user.mapper.AddressMapper;
-import com.griddynamics.user.mapper.UserDtoMapper;
-import com.griddynamics.user.mapper.UserMapper;
+import com.griddynamics.user.mapper.*;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
 import com.griddynamics.user.service.AddressService;
@@ -28,7 +25,8 @@ public class App {
         AddressMapper addressMapper = new AddressMapper();
         UserRepository userRepository = new UserRepository();
         AddressRepository addressRepository = new AddressRepository();
-        UserService userService = new UserService(userRepository, userDtoMapper, userMapper);
+        ClientDiscountInfoDtoMapper clientDiscountInformationDtoMapper = new ClientDiscountInfoDtoMapper();
+        UserService userService = new UserService(userRepository, userDtoMapper, userMapper, clientDiscountInformationDtoMapper);
         AddressService addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
         Facade facade = new Facade(userService, addressService, new UserValidator(), new AddressValidator());
         UserController userController = new UserController(facade);
@@ -73,5 +71,8 @@ public class App {
         System.out.println(userController.getAddresses(1L));
         userController.deleteAddress(1L, 1L);
         System.out.println(userController.getAddresses(1L));
+        System.out.println(userController.getClientDiscountInfo(1L));
+        userController.setUserVip(1L);
+        System.out.println(userController.getClientDiscountInfo(1L));
     }
 }

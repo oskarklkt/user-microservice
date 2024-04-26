@@ -1,6 +1,7 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.AddressDto;
+import com.griddynamics.user.dto.ClientDiscountInfoDto;
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.exception.AddressException;
 import com.griddynamics.user.exception.NoSuchElementException;
@@ -114,4 +115,17 @@ public class Facade {
         return addressesDto;
     }
 
+    public ClientDiscountInfoDto getClientDiscountInfo(Long userId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
+        return userService.getClientDiscountInfo(userId);
+    }
+
+    public void setUserVip(Long userId) {
+        if (!userValidator.isUserInDatabase(userId)) {
+            throw new NoSuchElementException("User not found");
+        }
+        userService.setUserVip(userId);
+    }
 }

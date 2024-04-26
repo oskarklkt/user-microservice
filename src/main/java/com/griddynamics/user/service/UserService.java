@@ -1,6 +1,8 @@
 package com.griddynamics.user.service;
 
+import com.griddynamics.user.dto.ClientDiscountInfoDto;
 import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.mapper.ClientDiscountInfoDtoMapper;
 import com.griddynamics.user.mapper.UserDtoMapper;
 import com.griddynamics.user.mapper.UserMapper;
 import com.griddynamics.user.model.User;
@@ -17,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
     private final UserMapper userMapper;
+    private final ClientDiscountInfoDtoMapper ClientDiscountInformationDtoMapper;
 
     public UserDto saveUser(UserDto userDto) {
         User user = userMapper.apply(UserRepository.getNextId(), userDto);
@@ -59,5 +62,14 @@ public class UserService {
 
     public boolean isEmailInDatabase(String email) {
         return userRepository.isEmailInDatabase(email);
+    }
+
+    public ClientDiscountInfoDto getClientDiscountInfo(Long userId) {
+        User user = userRepository.getUser(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        return ClientDiscountInformationDtoMapper.apply(user);
+    }
+
+    public void setUserVip(Long userId) {
+        userRepository.setUserVip(userId);
     }
 }
