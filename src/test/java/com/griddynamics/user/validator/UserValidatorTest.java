@@ -1,7 +1,7 @@
 package com.griddynamics.user.validator;
 
-import com.griddynamics.user.dtos.UserDto;
-import com.griddynamics.user.enums.Gender;
+import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.enumeration.Gender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;

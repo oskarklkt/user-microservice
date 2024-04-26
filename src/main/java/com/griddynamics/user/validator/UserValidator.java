@@ -1,7 +1,7 @@
 package com.griddynamics.user.validator;
 
-import com.griddynamics.user.dtos.UserDto;
-import com.griddynamics.user.repositories.UserRepository;
+import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.repository.UserRepository;
 
 public class UserValidator {
     private boolean isEmailValid(String email) {

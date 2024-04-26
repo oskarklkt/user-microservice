@@ -1,6 +1,6 @@
 package com.griddynamics.user.validator;
 
-import com.griddynamics.user.dtos.AddressDto;
+import com.griddynamics.user.dto.AddressDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,23 +1,22 @@
 package com.griddynamics.user;
 
-import com.griddynamics.user.controllers.UserController;
-import com.griddynamics.user.dtos.AddressDto;
-import com.griddynamics.user.dtos.UserDto;
-import com.griddynamics.user.enums.Gender;
-import com.griddynamics.user.mappers.AddressDtoMapper;
-import com.griddynamics.user.mappers.AddressMapper;
-import com.griddynamics.user.mappers.UserDtoMapper;
-import com.griddynamics.user.mappers.UserMapper;
-import com.griddynamics.user.repositories.AddressRepository;
-import com.griddynamics.user.repositories.UserRepository;
-import com.griddynamics.user.services.AddressService;
-import com.griddynamics.user.services.Facade;
-import com.griddynamics.user.services.UserService;
+import com.griddynamics.user.controller.UserController;
+import com.griddynamics.user.dto.AddressDto;
+import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.mapper.AddressDtoMapper;
+import com.griddynamics.user.mapper.AddressMapper;
+import com.griddynamics.user.mapper.UserDtoMapper;
+import com.griddynamics.user.mapper.UserMapper;
+import com.griddynamics.user.repository.AddressRepository;
+import com.griddynamics.user.repository.UserRepository;
+import com.griddynamics.user.service.AddressService;
+import com.griddynamics.user.service.Facade;
+import com.griddynamics.user.service.UserService;
 import com.griddynamics.user.validator.AddressValidator;
 import com.griddynamics.user.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import ui.UserInterface;
 
 @AllArgsConstructor
 @Builder

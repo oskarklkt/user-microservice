@@ -1,9 +1,9 @@
 package ui;
 
-import com.griddynamics.user.controllers.UserController;
-import com.griddynamics.user.dtos.AddressDto;
-import com.griddynamics.user.dtos.UserDto;
-import com.griddynamics.user.enums.Gender;
+import com.griddynamics.user.controller.UserController;
+import com.griddynamics.user.dto.AddressDto;
+import com.griddynamics.user.dto.UserDto;
+import com.griddynamics.user.enumeration.Gender;
 
 import java.util.Scanner;
 
