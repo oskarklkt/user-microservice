@@ -14,7 +14,7 @@ DB_PASSWORD={Postgres db password}
 brew install colima
 brew install docker
 brew install docker-compose
-docker-compose -f "docker-compose-postgres.yml" up 
+docker-compose -f "docker-compose.yml" up 
 ```
 4. Check if it worked fine using for example DBeaver - if test connection with given in .env file works, then it is fine.
 
