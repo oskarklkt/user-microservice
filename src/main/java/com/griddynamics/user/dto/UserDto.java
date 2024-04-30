@@ -4,12 +4,10 @@ import com.google.gson.GsonBuilder;
 import com.griddynamics.user.enumeration.Gender;
 import lombok.*;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
+@Data
 @Builder
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     private String name;
     private String surname;

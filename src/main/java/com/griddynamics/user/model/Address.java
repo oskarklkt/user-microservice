@@ -2,13 +2,10 @@ package com.griddynamics.user.model;
 
 import lombok.*;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Address {
     private Long id;
     private Long userId;

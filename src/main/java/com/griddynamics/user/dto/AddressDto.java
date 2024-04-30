@@ -4,12 +4,10 @@ package com.griddynamics.user.dto;
 import com.google.gson.GsonBuilder;
 import lombok.*;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
+@Data
 @Builder
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AddressDto {
     private Long userId;
     private String country;

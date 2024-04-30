@@ -5,12 +5,10 @@ import com.griddynamics.user.enumeration.ClientType;
 import lombok.*;
 
 
-@AllArgsConstructor
-@Getter
-@EqualsAndHashCode
-@ToString
-@Setter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     private Long id;
     private String name;
