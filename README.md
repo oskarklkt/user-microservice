@@ -43,6 +43,8 @@ docker-compose -f "docker-compose.yml" up
   "phoneNumber": "string",
   "email": "String",
   "profilePhotoUrl": "String"
+  "account_creation_date": "String"
+  "client_type": Enum (VIP/BASIC)
 }
 ```
 ### Address
