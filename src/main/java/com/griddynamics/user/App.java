@@ -14,10 +14,12 @@ import com.griddynamics.user.validator.AddressValidator;
 import com.griddynamics.user.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Generated;
 
 @AllArgsConstructor
 @Builder
 public class App {
+    @Generated
     public static void main(String[] args) {
         UserDtoMapper userDtoMapper = new UserDtoMapper();
         AddressDtoMapper addressDtoMapper = new AddressDtoMapper();
