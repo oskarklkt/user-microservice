@@ -32,7 +32,6 @@ public class App {
         AddressService addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
         Facade facade = new Facade(userService, addressService, new UserValidator(), new AddressValidator());
         UserController userController = new UserController(facade);
-        //new UserInterface(userController).start();
         System.out.println(userController.saveUser(UserDto.builder()
                 .name("Oskar")
                 .surname("Kowalski")
