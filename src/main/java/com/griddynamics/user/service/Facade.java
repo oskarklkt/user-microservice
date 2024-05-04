@@ -26,7 +26,8 @@ public class Facade {
     public UserDto saveUser(UserDto userDto) {
         if (!userValidator.isUserDtoValid(userDto)) {
             throw new UserException("User data is not valid");
-        } else if (userService.isEmailInDatabase(userDto.getEmail())) {
+        }
+        if (userService.isEmailInDatabase(userDto.getEmail())) {
             throw new UserException("User with this email already exists");
         }
         return userService.saveUser(userDto);
@@ -64,7 +65,8 @@ public class Facade {
     public UserDto updateUser(Long userId, UserDto userDto) {
         if (!userValidator.isUserDtoValid(userDto)) {
             throw new UserException("User data is not valid");
-        } else if (!userValidator.isUserInDatabase(userId)) {
+        }
+        if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return userService.updateUser(userId, userDto);
@@ -75,14 +77,11 @@ public class Facade {
         return userService.isEmailInDatabase(email);
     }
 
-    public UserDto isUserInDatabase(Long userId) {
-        return userService.getUser(userId);
-    }
-
     public AddressDto addAddress(Long userId, AddressDto addressDto) {
         if (!addressValidator.validateAddress(addressDto)) {
             throw new AddressException("Address data is not valid");
-        } else if (!userValidator.isUserInDatabase(userId)) {
+        }
+        if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return addressService.addAddress(userId, addressDto);
@@ -91,7 +90,8 @@ public class Facade {
     public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
         if (!addressValidator.validateAddress(addressDto)) {
             throw new AddressException("Address data is not valid");
-        } else if (!userValidator.isUserInDatabase(userId)) {
+        }
+        if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return addressService.updateAddress(userId, addressId, addressDto);

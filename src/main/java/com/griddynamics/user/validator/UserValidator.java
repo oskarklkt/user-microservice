@@ -2,32 +2,41 @@ package com.griddynamics.user.validator;
 
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 
 public class UserValidator {
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    private static final String PHONE_NUMBER_REGEX = "^\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$";
+    private static final String NAME_REGEX = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+    private static final String SURNAME_REGEX = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$";
+    private static final String BIRTHDAY_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
+
+
     private boolean isEmailValid(String email) {
-        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+        return !StringUtils.isEmpty(email) && email.matches(EMAIL_REGEX);
     }
 
     private boolean isPhoneNumberValid(String phoneNumber) {
-        return phoneNumber.matches("^\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$");
+        return !StringUtils.isEmpty(phoneNumber) && phoneNumber.matches(PHONE_NUMBER_REGEX);
     }
 
     private boolean isNameValid(String name) {
-        return name.matches("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+        return name.matches(NAME_REGEX);
     }
 
     private boolean isSurnameValid(String surname) {
-        return surname.matches("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+        return !StringUtils.isEmpty(surname) && surname.matches(SURNAME_REGEX);
     }
 
     private boolean isBirthdayValid(String birthday) {
-        return birthday.matches("^\\d{4}-\\d{2}-\\d{2}$");
+        return !StringUtils.isEmpty(birthday) && birthday.matches(BIRTHDAY_REGEX);
     }
 
     private boolean isGenderValid(String gender) {
-        return gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female");
+        return !StringUtils.isEmpty(gender)&& (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female"));
     }
 
+    //TODO: CREATE ISCONTAINS IN USERREPOSITORY INSTEAD OF THIS METHOD
     public boolean isUserInDatabase(Long userId) {
         return UserRepository.getUsers().containsKey(userId);
     }
