@@ -11,7 +11,10 @@ import com.griddynamics.user.validator.UserValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,24 +25,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class FacadeTest {
 
+    @Mock
     UserService userService;
+    @Mock
     AddressService addressService;
+    @Mock
     UserDto userDto;
+    @Mock
     AddressDto addressDto;
     Facade facade;
+    @Mock
     UserValidator userValidator;
+    @Mock
     AddressValidator addressValidator;
 
     @BeforeEach
     void setUp() {
-        userService = Mockito.mock(UserService.class);
-        addressService = Mockito.mock(AddressService.class);
-        userDto = Mockito.mock(UserDto.class);
-        addressDto = Mockito.mock(AddressDto.class);
-        userValidator = Mockito.mock(UserValidator.class);
-        addressValidator = Mockito.mock(AddressValidator.class);
         facade = new Facade(userService, addressService, userValidator, addressValidator);
     }
 
@@ -118,7 +122,6 @@ class FacadeTest {
     void addAddress_InvalidAddress_ThrowsException() {
         // Setup
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
         when(addressValidator.validateAddress(addressDto)).thenReturn(false);
 
         // Execute & Verify

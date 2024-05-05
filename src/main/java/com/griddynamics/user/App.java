@@ -1,5 +1,7 @@
 package com.griddynamics.user;
 
+import com.griddynamics.user.controller.AddressController;
+import com.griddynamics.user.controller.DiscountController;
 import com.griddynamics.user.controller.UserController;
 import com.griddynamics.user.dto.AddressDto;
 import com.griddynamics.user.dto.UserDto;
@@ -15,7 +17,9 @@ import com.griddynamics.user.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Generated;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor
 @Builder
 public class App {
@@ -32,7 +36,9 @@ public class App {
         AddressService addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
         Facade facade = new Facade(userService, addressService, new UserValidator(), new AddressValidator());
         UserController userController = new UserController(facade);
-        System.out.println(userController.saveUser(UserDto.builder()
+        AddressController addressController = new AddressController(facade);
+        DiscountController discountController = new DiscountController(facade);
+        log.info("{}", userController.saveUser(UserDto.builder()
                 .name("Oskar")
                 .surname("Kowalski")
                 .email("Oskar@gmail.com")
@@ -41,11 +47,11 @@ public class App {
                 .phoneNumber("123456789")
                 .gender(Gender.MALE)
                 .build()));
-        System.out.println(userController.getUser(1L));
-        System.out.println(userController.getUserByEmail("Oskar@gmail.com"));
-        System.out.println(userController.getAllUsers());
-        System.out.println(userController.getUserEmail(1L));
-        System.out.println(userController.addAddress(1L, AddressDto.builder()
+        log.info("{}", userController.getUser(1L));
+        log.info("{}", userController.getUserByEmail("Oskar@gmail.com"));
+        log.info("{}", userController.getAllUsers());
+        log.info("{}", userController.getUserEmail(1L));
+        log.info("{}", addressController.addAddress(1L, AddressDto.builder()
                 .city("Warsaw")
                 .streetAddress("Marszalkowska")
                         .streetAddress2("1")
@@ -57,7 +63,7 @@ public class App {
                         .phoneNumber("500204248")
                         .zipCode("42200")
                         .build()));
-        System.out.println(userController.addAddress(1L, AddressDto.builder()
+        log.info("{}", addressController.addAddress(1L, AddressDto.builder()
                 .city("Cracow")
                 .streetAddress("Marszalkowska")
                 .streetAddress2("1")
@@ -69,11 +75,11 @@ public class App {
                 .phoneNumber("500204248")
                 .zipCode("42200")
                 .build()));
-        System.out.println(userController.getAddresses(1L));
-        userController.deleteAddress(1L, 1L);
-        System.out.println(userController.getAddresses(1L));
-        System.out.println(userController.getClientDiscountInfo(1L));
-        userController.setUserVip(1L);
-        System.out.println(userController.getClientDiscountInfo(1L));
+        log.info("{}", addressController.getAddresses(1L));
+        addressController.deleteAddress(1L, 1L);
+        log.info("{}", addressController.getAddresses(1L));
+        log.info("{}", discountController.getClientDiscountInfo(1L));
+        discountController.setUserVip(1L);
+        log.info("{}", discountController.getClientDiscountInfo(1L));
     }
 }

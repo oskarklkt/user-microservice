@@ -1,3 +1,4 @@
+--- TODO: 1)run some Query plans -> scans vs indexes 2) type of indexes
 DO
 $$
     BEGIN

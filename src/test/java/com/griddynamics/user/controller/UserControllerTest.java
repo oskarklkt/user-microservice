@@ -1,6 +1,6 @@
 package com.griddynamics.user.controller;
 
-import com.griddynamics.user.dto.AddressDto;
+
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.service.Facade;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {
@@ -81,47 +80,5 @@ class UserControllerTest {
         userController.updateUser(1L, userDto);
         //then
         verify(facade).updateUser(1L, userDto);
-    }
-
-    @Test
-    void isEmailInDatabase() {
-        //when
-        userController.isEmailInDatabase(anyString());
-        //then
-        verify(facade).isEmailInDatabase(anyString());
-    }
-
-    @Test
-    void addAddress() {
-        //when
-        userController.addAddress(anyLong(), any());
-        //then
-        verify(facade).addAddress(anyLong(), any());
-    }
-
-    @Test
-    void updateAddress() {
-        //given
-        AddressDto addressDto = new AddressDto();
-        //when
-        userController.updateAddress(1L, 1L, addressDto);
-        //then
-        verify(facade).updateAddress(1L, 1L, addressDto);
-    }
-
-    @Test
-    void deleteAddress() {
-        //when
-        userController.deleteAddress(anyLong(), anyLong());
-        //then
-        verify(facade).deleteAddress(anyLong(), anyLong());
-    }
-
-    @Test
-    void getAddresses() {
-        //when
-        userController.getAddresses(anyLong());
-        //then
-        verify(facade).getAddresses(anyLong());
     }
 }

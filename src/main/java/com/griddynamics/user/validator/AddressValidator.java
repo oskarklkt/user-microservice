@@ -1,43 +1,47 @@
 package com.griddynamics.user.validator;
 
 import com.griddynamics.user.dto.AddressDto;
+import org.apache.commons.lang3.StringUtils;
 
 public class AddressValidator {
+    private static final String PHONE_NUMBER_REGEX = "^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?(-?\\s?[0-9])+$";
+    private static final String ZIP_CODE_REGEX = "^\\d{5}$";
 
     private boolean validateAddress(String address) {
-        return address != null && !address.isEmpty();
+        return !StringUtils.isEmpty(address) && !address.isEmpty();
     }
 
     private boolean validateCity(String city) {
-        return city != null && !city.isEmpty();
+        return !StringUtils.isEmpty(city);
     }
 
     private boolean validateCountry(String country) {
-        return country != null && !country.isEmpty();
+        return !StringUtils.isEmpty(country);
     }
 
     private boolean validateName(String name) {
-        return name != null && !name.isEmpty();
+        return !StringUtils.isEmpty(name);
     }
 
     private boolean validatePhoneNumber(String phoneNumber) {
-        return phoneNumber.matches("^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?(-?\\s?[0-9])+$");
+        return !StringUtils.isEmpty(phoneNumber) &&
+                phoneNumber.matches(PHONE_NUMBER_REGEX);
     }
 
     private boolean validateStateProvinceRegion(String stateProvinceRegion) {
-        return stateProvinceRegion != null && !stateProvinceRegion.isEmpty();
+        return !StringUtils.isEmpty(stateProvinceRegion);
     }
 
     private boolean validateStreetAddress(String streetAddress) {
-        return streetAddress != null && !streetAddress.isEmpty();
+        return !StringUtils.isEmpty(streetAddress);
     }
 
     private boolean validateStreetAddress2(String streetAddress2) {
-        return streetAddress2 != null && !streetAddress2.isEmpty();
+        return !StringUtils.isEmpty(streetAddress2);
     }
 
     private boolean validateZipCode(String zipCode) {
-        return zipCode.matches("^\\d{5}$");
+        return zipCode.matches(ZIP_CODE_REGEX);
     }
 
     public boolean validateAddress(AddressDto addressDto) {

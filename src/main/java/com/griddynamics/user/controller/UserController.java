@@ -1,7 +1,5 @@
 package com.griddynamics.user.controller;
 
-import com.griddynamics.user.dto.AddressDto;
-import com.griddynamics.user.dto.ClientDiscountInfoDto;
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.exception.BaseException;
 import com.griddynamics.user.service.Facade;
@@ -75,71 +73,5 @@ public class UserController {
             log.error("{} | {}", e.getMessage(), e.getStatusCode());
         }
         return null;
-    }
-
-
-    public boolean isEmailInDatabase(String email) {
-        return facade.isEmailInDatabase(email);
-    }
-
-    public UserDto isUserInDatabase(Long userId) {
-        try {
-            return facade.getUser(userId);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-        return null;
-    }
-
-    public AddressDto addAddress(Long userId, AddressDto addressDto) {
-        try {
-            return facade.addAddress(userId, addressDto);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-        return null;
-    }
-
-    public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
-        try {
-            return facade.updateAddress(userId, addressId, addressDto);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-        return null;
-    }
-
-    public void deleteAddress(Long userId, Long addressId) {
-        try {
-            facade.deleteAddress(userId, addressId);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-    }
-
-    public List<AddressDto> getAddresses(Long userId) {
-        try {
-            return facade.getAddresses(userId);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-        return null;
-    }
-
-    public ClientDiscountInfoDto getClientDiscountInfo(Long userId) {
-        try {
-            return facade.getClientDiscountInfo(userId);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
-        return null;
-    }
-
-    public void setUserVip(Long userId) {
-        try {
-            facade.setUserVip(userId);
-        } catch (BaseException e) {
-            log.error("{} | {}", e.getMessage(), e.getStatusCode());
-        }
     }
 }

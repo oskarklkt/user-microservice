@@ -11,11 +11,8 @@ public class AddressRepository {
     private static final Map<Long, List<Address>> addresses = new ConcurrentHashMap<>();
 
     public void save(Long userId, Address address) {
-        if (addresses.containsKey(userId)) {
-            addresses.get(userId).add(address);
-        } else {
-            addresses.put(userId, new ArrayList<>(Collections.singletonList(address)));
-        }
+        addresses.putIfAbsent(userId, new ArrayList<>());
+        addresses.get(userId).add(address);
     }
 
     public void deleteAddress(Long userId, Long addressId) {
