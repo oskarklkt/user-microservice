@@ -1,7 +1,7 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.ClientDiscountInfoDto;
-import com.griddynamics.user.mapper.ClientDiscountInfoDtoMapper;
+import com.griddynamics.user.mapper.modelToDto.ClientDiscountInfoDtoMapper;
 import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.UserRepository;
 import lombok.AllArgsConstructor;

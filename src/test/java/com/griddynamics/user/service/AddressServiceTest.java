@@ -1,12 +1,9 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.AddressDto;
-import com.griddynamics.user.enumeration.ClientType;
-import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.mapper.AddressDtoMapper;
-import com.griddynamics.user.mapper.AddressMapper;
+import com.griddynamics.user.mapper.modelToDto.AddressDtoMapper;
+import com.griddynamics.user.mapper.dtoToModel.AddressMapper;
 import com.griddynamics.user.model.Address;
-import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,9 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,7 +71,7 @@ class AddressServiceTest {
         when(userRepository.isUserInDatabase(userId)).thenReturn(true);
 
         // When
-        AddressDto result = addressService.addAddress(userId, addressDto);
+       addressService.addAddress(userId, addressDto);
 
         // Then
         verify(addressRepository).save(any(), any());
@@ -91,7 +85,7 @@ class AddressServiceTest {
         when(userRepository.isUserInDatabase(userId)).thenReturn(true);
 
         // When
-        AddressDto result = addressService.updateAddress(userId, addressId, addressDto);
+        addressService.updateAddress(userId, addressId, addressDto);
 
         // Then
         verify(addressRepository).deleteAddress(userId, addressId);

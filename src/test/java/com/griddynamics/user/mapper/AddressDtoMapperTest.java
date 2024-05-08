@@ -2,6 +2,7 @@ package com.griddynamics.user.mapper;
 
 import com.griddynamics.user.dto.AddressDto;
 import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.mapper.modelToDto.AddressDtoMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.model.User;
 import org.junit.jupiter.api.BeforeEach;

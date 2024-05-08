@@ -1,5 +1,6 @@
 package com.griddynamics.user.model;
 
+import com.google.gson.GsonBuilder;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.enumeration.ClientType;
 import lombok.*;
@@ -20,4 +21,9 @@ public class User {
     private String profilePhotoUrl;
     private String dateOfAccountCreation;
     private ClientType clientType;
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }

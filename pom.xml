@@ -26,10 +26,35 @@
         <slf4j-simple.version>2.0.0</slf4j-simple.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <hikari.version>5.1.0</hikari.version>
+        <postgresql.version>42.7.3</postgresql.version>
+        <dotenv.version>5.2.2</dotenv.version>
+        <h2.version>2.2.224</h2.version>
 
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>${dotenv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+        </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -76,7 +101,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
             <scope>${mapstruct.version}}</scope>
         </dependency>
         <dependency>

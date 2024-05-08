@@ -1,5 +1,6 @@
 package com.griddynamics.user.model;
 
+import com.google.gson.GsonBuilder;
 import lombok.*;
 
 @Data
@@ -16,4 +17,9 @@ public class Address {
     private String stateProvinceRegion;
     private String zipCode;
     private String phoneNumber;
+
+    @Override
+    public String toString() {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }

@@ -1,4 +1,4 @@
-package com.griddynamics.user.mapper;
+package com.griddynamics.user.mapper.dtoToModel;
 
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.model.User;

@@ -3,9 +3,9 @@ package com.griddynamics.user.service;
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.mapper.ClientDiscountInfoDtoMapper;
-import com.griddynamics.user.mapper.UserDtoMapper;
-import com.griddynamics.user.mapper.UserMapper;
+import com.griddynamics.user.mapper.modelToDto.ClientDiscountInfoDtoMapper;
+import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
+import com.griddynamics.user.mapper.dtoToModel.UserMapper;
 import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper(), new ClientDiscountInfoDtoMapper());
+        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper());
         userDto = new UserDto("test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
         user = new User(1L, "test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC);
     }

@@ -1,10 +1,8 @@
 package com.griddynamics.user.service;
 
-import com.griddynamics.user.dto.ClientDiscountInfoDto;
 import com.griddynamics.user.dto.UserDto;
-import com.griddynamics.user.mapper.ClientDiscountInfoDtoMapper;
-import com.griddynamics.user.mapper.UserDtoMapper;
-import com.griddynamics.user.mapper.UserMapper;
+import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
+import com.griddynamics.user.mapper.dtoToModel.UserMapper;
 import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
     private final UserMapper userMapper;
-    private final ClientDiscountInfoDtoMapper ClientDiscountInformationDtoMapper;
+
 
     public UserDto saveUser(UserDto userDto) {
         User user = userMapper.apply(UserRepository.getNextId(), userDto);

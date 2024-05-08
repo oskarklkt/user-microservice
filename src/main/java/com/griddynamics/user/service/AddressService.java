@@ -1,8 +1,8 @@
 package com.griddynamics.user.service;
 
 import com.griddynamics.user.dto.AddressDto;
-import com.griddynamics.user.mapper.AddressDtoMapper;
-import com.griddynamics.user.mapper.AddressMapper;
+import com.griddynamics.user.mapper.modelToDto.AddressDtoMapper;
+import com.griddynamics.user.mapper.dtoToModel.AddressMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.AddressRepository;
