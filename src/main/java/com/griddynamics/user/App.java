@@ -10,6 +10,7 @@ import com.griddynamics.user.mapper.*;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
 import com.griddynamics.user.service.AddressService;
+import com.griddynamics.user.service.DiscountInfoService;
 import com.griddynamics.user.service.Facade;
 import com.griddynamics.user.service.UserService;
 import com.griddynamics.user.validator.AddressValidator;
@@ -34,7 +35,7 @@ public class App {
         ClientDiscountInfoDtoMapper clientDiscountInformationDtoMapper = new ClientDiscountInfoDtoMapper();
         UserService userService = new UserService(userRepository, userDtoMapper, userMapper, clientDiscountInformationDtoMapper);
         AddressService addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
-        Facade facade = new Facade(userService, addressService, new UserValidator(), new AddressValidator());
+        Facade facade = new Facade(userService, addressService, new UserValidator(), new AddressValidator(), new DiscountInfoService(userRepository, clientDiscountInformationDtoMapper));
         UserController userController = new UserController(facade);
         AddressController addressController = new AddressController(facade);
         DiscountController discountController = new DiscountController(facade);

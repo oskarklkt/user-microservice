@@ -64,12 +64,4 @@ public class UserService {
         return userRepository.isEmailInDatabase(email);
     }
 
-    public ClientDiscountInfoDto getClientDiscountInfo(Long userId) {
-        User user = userRepository.getUser(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
-        return ClientDiscountInformationDtoMapper.apply(user);
-    }
-
-    public void setUserVip(Long userId) {
-        userRepository.setUserVip(userId);
-    }
 }

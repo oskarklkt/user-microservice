@@ -41,10 +41,12 @@ class FacadeTest {
     UserValidator userValidator;
     @Mock
     AddressValidator addressValidator;
+    @Mock
+    DiscountInfoService discountInfoService;
 
     @BeforeEach
     void setUp() {
-        facade = new Facade(userService, addressService, userValidator, addressValidator);
+        facade = new Facade(userService, addressService, userValidator, addressValidator, discountInfoService);
     }
 
     @AfterEach

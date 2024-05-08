@@ -22,6 +22,7 @@ public class Facade {
     private final AddressService addressService;
     private final UserValidator userValidator;
     private final AddressValidator addressValidator;
+    private final DiscountInfoService discountInfoService;
 
     public UserDto saveUser(UserDto userDto) {
         if (!userValidator.isUserDtoValid(userDto)) {
@@ -119,13 +120,13 @@ public class Facade {
         if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
-        return userService.getClientDiscountInfo(userId);
+        return discountInfoService.getClientDiscountInfo(userId);
     }
 
     public void setUserVip(Long userId) {
         if (!userValidator.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
-        userService.setUserVip(userId);
+        discountInfoService.setUserVip(userId);
     }
 }

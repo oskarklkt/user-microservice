@@ -8,7 +8,6 @@ $$
                      AND table_name IN ('users', 'addresses')) THEN
             RAISE NOTICE 'Tables already exist';
         ELSE
-
             CREATE TABLE users
             (
                 id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
