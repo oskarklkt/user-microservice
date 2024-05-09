@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Getter
 @Setter
 
-public abstract class QueryHandler<T> {
+public class QueryHandler<T> {
 
     @SneakyThrows
     public void execute(String query, Object... args) {

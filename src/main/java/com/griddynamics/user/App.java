@@ -1,8 +1,7 @@
 package com.griddynamics.user;
 
-import com.griddynamics.user.common.AddressQueryHandler;
 import com.griddynamics.user.common.Database;
-import com.griddynamics.user.common.UserQueryHandler;
+import com.griddynamics.user.common.QueryHandler;
 import com.griddynamics.user.controller.AddressController;
 import com.griddynamics.user.controller.DiscountController;
 import com.griddynamics.user.controller.UserController;
@@ -13,6 +12,8 @@ import com.griddynamics.user.mapper.modelToDto.ClientDiscountInfoDtoMapper;
 import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
+import com.griddynamics.user.model.Address;
+import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
 import com.griddynamics.user.service.AddressService;
@@ -36,14 +37,14 @@ public class App {
     @Generated
     public static void main(String[] args) {
         UserDtoMapper userDtoMapper = new UserDtoMapper();
-        UserQueryHandler userQueryHandler = new UserQueryHandler();
+        QueryHandler<User> userQueryHandler = new QueryHandler<>();
         ResultSetAddressMapper resultSetAddressMapper = new ResultSetAddressMapper();
         ResultSetUserMapper resultSetUserMapper = new ResultSetUserMapper();
         AddressDtoMapper addressDtoMapper = new AddressDtoMapper();
         UserMapper userMapper = new UserMapper();
         AddressMapper addressMapper = new AddressMapper();
         UserRepository userRepository = new UserRepository(userQueryHandler, resultSetUserMapper);
-        AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
+        QueryHandler<Address> addressQueryHandler = new QueryHandler<>();
         AddressRepository addressRepository = new AddressRepository(addressQueryHandler, resultSetAddressMapper);
         ClientDiscountInfoDtoMapper clientDiscountInformationDtoMapper = new ClientDiscountInfoDtoMapper();
         UserService userService = new UserService(userRepository, userDtoMapper, userMapper);

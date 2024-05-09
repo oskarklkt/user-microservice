@@ -1,7 +1,7 @@
 package com.griddynamics.user.repository;
 
 
-import com.griddynamics.user.common.UserQueryHandler;
+import com.griddynamics.user.common.QueryHandler;
 import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 public class UserRepository {
 
-    private final UserQueryHandler userQueryHandler;
+    private final QueryHandler<User> userQueryHandler;
     private final ResultSetUserMapper resultSetUserMapper;
 
     private final static String INSERT_USER_QUERY = "INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) " +

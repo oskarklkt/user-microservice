@@ -3,18 +3,15 @@ package com.griddynamics.user.repository;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.griddynamics.user.common.UserQueryHandler;
+import com.griddynamics.user.common.QueryHandler;
 import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
 import com.griddynamics.user.model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +19,7 @@ import java.util.Optional;
 class UserRepositoryTest {
 
     @Mock
-    private UserQueryHandler userQueryHandler;
+    private QueryHandler<User> userQueryHandler;
 
 
     @InjectMocks

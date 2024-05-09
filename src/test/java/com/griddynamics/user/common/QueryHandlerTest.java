@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QueryHandlerTest {
 
-    AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
-    UserQueryHandler userQueryHandler = new UserQueryHandler();
+    QueryHandler<Address> addressQueryHandler = new QueryHandler<>();
+    QueryHandler<User> userQueryHandler = new QueryHandler<>();
     ResultSetUserMapper resultSetUserMapper = new ResultSetUserMapper();
     ResultSetAddressMapper resultSetAddressMapper = new ResultSetAddressMapper();
 

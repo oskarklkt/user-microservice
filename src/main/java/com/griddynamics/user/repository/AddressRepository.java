@@ -1,6 +1,5 @@
 package com.griddynamics.user.repository;
-
-import com.griddynamics.user.common.AddressQueryHandler;
+import com.griddynamics.user.common.QueryHandler;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.model.Address;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,7 @@ import java.util.*;
 @AllArgsConstructor
 public class AddressRepository {
 
-    private final AddressQueryHandler addressQueryHandler;
+    private final QueryHandler<Address> addressQueryHandler;
     private final ResultSetAddressMapper resultSetAddressMapper;
 
     private final static String SAVE_ADDRESS_QUERY = "INSERT INTO addresses (user_id, country, street_address_1, street_address_2, city, state_province_region, zip_code, phone_number) " +
