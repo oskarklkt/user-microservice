@@ -3,6 +3,7 @@ package com.griddynamics.user.common;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
+
 import java.sql.Connection;
 
 public class Database {
@@ -25,7 +26,7 @@ public class Database {
     }
 
     @SneakyThrows
-    public static Connection getConnection()  {
+    public static Connection getConnection() {
         if (dataSource == null) {
             throw new IllegalStateException("DataSource is not initialized.");
         }
