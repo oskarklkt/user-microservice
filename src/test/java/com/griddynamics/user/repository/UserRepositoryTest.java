@@ -1,123 +1,88 @@
 package com.griddynamics.user.repository;
 
-import com.griddynamics.user.enumeration.ClientType;
-import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.model.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.griddynamics.user.common.UserQueryHandler;
+import com.griddynamics.user.enumeration.ClientType;
+import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
+import com.griddynamics.user.model.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+@ExtendWith(MockitoExtension.class)
 class UserRepositoryTest {
 
-    UserRepository userRepository;
-    User user;
+    @Mock
+    private UserQueryHandler userQueryHandler;
 
-    @BeforeEach
-    void setUp() {
-        userRepository = new UserRepository();
-        user = new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC );
-    }
 
-    @AfterEach
-    void tearDown() {
-        UserRepository.getUsers().clear();
+    @InjectMocks
+    private UserRepository userRepository;
+
+
+    @Test
+    void testSave() {
+        User user = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2024-05-09", ClientType.BASIC);
+        userRepository.save(user);
+        verify(userQueryHandler).execute(eq("INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"), eq("John"), eq("Doe"), eq("M"), eq("1990-01-01"), eq("123456789"), eq("john.doe@example.com"), eq("https://image.url"), eq("2024-05-09"), eq("BASIC"));
     }
 
     @Test
-    void save() {
-        //when
-        userRepository.save(user);
-        //then
-        assertTrue(UserRepository.getUsers().containsKey(1L));
-        assertTrue(UserRepository.getUsers().containsValue(user));
+    void testGetUser() {
+        User expectedUser = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2023-01-01", ClientType.BASIC);
+        when(userQueryHandler.findOne(anyString(), any(), eq(1L))).thenReturn(expectedUser);
+        Optional<User> user = userRepository.getUser(1L);
+        assertTrue(user.isPresent());
+        assertEquals("John", user.get().getName());
+        verify(userQueryHandler).findOne(anyString(), any(), eq(1L));
     }
 
     @Test
-    void getUser() {
-        //given
-        userRepository.save(user);
-        //when
-        User userFromDb = userRepository.getUser(1L).get();
-        //then
-        assertEquals(user, userFromDb);
-        //then
-        assertEquals(user, userFromDb);
+    void testGetUserByEmail() {
+        User expectedUser = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2023-01-01", ClientType.BASIC);
+        when(userQueryHandler.findOne(anyString(), any(), eq("john.doe@example.com"))).thenReturn(expectedUser);
+        Optional<User> user = userRepository.getUserByEmail("john.doe@example.com");
+        assertTrue(user.isPresent());
+        assertEquals("John", user.get().getName());
+        verify(userQueryHandler).findOne(anyString(), any(), eq("john.doe@example.com"));
     }
 
     @Test
-    void getUserByEmail() {
-        //given
-        userRepository.save(user);
-        //when
-        User userFromDb = userRepository.getUserByEmail("test@gmail.com").get();
-        // then
-        assertEquals(user, userFromDb);
+    void testGetAllUsers() {
+        List<User> expectedUsers = List.of(new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2023-01-01", ClientType.BASIC));
+        when(userQueryHandler.findMany(anyString(), any())).thenReturn(expectedUsers);
+        List<User> users = userRepository.getAllUsers();
+        assertFalse(users.isEmpty());
+        assertEquals(1, users.size());
+        verify(userQueryHandler).findMany(anyString(), any());
     }
 
     @Test
-    void getAllUsers() {
-        //given
-        userRepository.save(user);
-        //when
-        userRepository.save(new User(1L,"test", "Tester", Gender.MALE, "01.01.2000", "+1234w56789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC));
-        //then
-        assertEquals(2, userRepository.getAllUsers().size());
-    }
-
-    @Test
-    void deleteUser() {
-        //given
-        userRepository.save(user);
-        //when
+    void testDeleteUser() {
         userRepository.deleteUser(1L);
-        //then
-        assertFalse(UserRepository.getUsers().containsKey(1L));
+        verify(userQueryHandler).execute(anyString(), eq(1L));
     }
 
     @Test
-    void updateUser() {
-        //given
-        userRepository.save(user);
-        //when
-        User updatedUser = new User(1L,"test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC);
-        userRepository.updateUser(1L, updatedUser);
-        //then
-        assertEquals(updatedUser, userRepository.getUser(1L).get());
+    void testUpdateUser() {
+        User user = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2023-01-01", ClientType.BASIC);
+        User updatedUser = userRepository.updateUser(1L, user);
+        verify(userQueryHandler).execute(anyString(), eq("John"), eq("Doe"), eq("M"), eq("1990-01-01"), eq("123456789"), eq("john.doe@example.com"), eq("https://image.url"), eq(1L));
+        assertEquals(user.getEmail(), updatedUser.getEmail());  // Confirm the returned user has expected fields
     }
 
     @Test
-    void isEmailInDatabase() {
-        //given
-        userRepository.save(user);
-        //then
-        assertTrue(userRepository.isEmailInDatabase("test@gmail.com"));
-        assertFalse(userRepository.isEmailInDatabase("ndioasndio"));
-    }
-
-    @Test
-    void isUserInDatabase() {
-        //given
-        userRepository.save(user);
-        //then
-        assertTrue(userRepository.isUserInDatabase(1L));
-        assertFalse(userRepository.isUserInDatabase(2L));
-    }
-
-    @Test
-    void getNextId() {
-        //given
-        userRepository.save(user);
-        //then
-        assertEquals(2L, UserRepository.getNextId());
-    }
-
-    @Test
-    void getUsers() {
-        //given
-        userRepository.save(user);
-        //then
-        assertEquals(1, UserRepository.getUsers().size());
+    void testSetUserVip() {
+        userRepository.setUserVip(1L);
+        verify(userQueryHandler).execute(anyString(), eq("VIP"), eq(1L));
     }
 }

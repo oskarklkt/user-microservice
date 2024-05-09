@@ -56,13 +56,6 @@ class UserControllerTest {
         verify(facade).getAllUsers();
     }
 
-    @Test
-    void getUserEmail() {
-        //when
-        userController.getUserEmail(anyLong());
-        //then
-        verify(facade).getUserEmail(anyLong());
-    }
 
     @Test
     void deleteUser() {

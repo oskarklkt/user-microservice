@@ -1,64 +1,60 @@
 package com.griddynamics.user.repository;
 
-import com.griddynamics.user.model.Address;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.griddynamics.user.common.AddressQueryHandler;
+
+import com.griddynamics.user.model.Address;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
 class AddressRepositoryTest {
 
-    AddressRepository addressRepository;
-    Address address;
+    @Mock
+    private AddressQueryHandler addressQueryHandler;
 
-    @BeforeEach
-    void setUp() {
-        address = new Address(1L, 1L, "Poland", "Marszałkowska", "1", "Warsaw", "Mazovian", "00-000", "123456789");
-        addressRepository = new AddressRepository();
-    }
 
-    @AfterEach
-    void tearDown() {
-        AddressRepository.getAddresses().clear();
+    @InjectMocks
+    private AddressRepository addressRepository;
+
+
+    @Test
+    void testSave() {
+        Address address = new Address(1L,1L, "USA", "Times Square", "street", "New York", "NY", "12345", "123456789");
+        addressRepository.save(1L, address);
+        verify(addressQueryHandler).execute(anyString(), eq(1L), eq("USA"), eq("Times Square"), eq("street"),
+                eq("New York"), eq("NY"), eq("12345"), eq("123456789"));
     }
 
     @Test
-    void save() {
-        //when
-        addressRepository.save(1L, address);
-        //then
-        assertEquals(1, AddressRepository.getAddresses().size());
-    }
-
-    @Test
-    void saveTwo() {
-        //given
-        Address address1 = new Address(1L, 1L, "Poland", "3 Maja", "1", "Czestochowa", "Slaskie", "00-000", "123456789");
-        //when
-        addressRepository.save(1L, address);
-        addressRepository.save(1L, address1);
-        //then
-        assertEquals(2, AddressRepository.getAddresses().get(1L).size());
-    }
-
-    @Test
-    void deleteAddress() {
-        //given
-        addressRepository.save(1L, address);
-        //when
+    void testDeleteAddress() {
         addressRepository.deleteAddress(1L, 1L);
-        //then
-        assertEquals(0, AddressRepository.getAddresses().get(1L).size());
+        verify(addressQueryHandler).execute(anyString(), eq(1L), eq(1L));
     }
 
     @Test
-    void findAllByUserId() {
-        //given
-        addressRepository.save(1L, address);
-        //when
-        var addresses = addressRepository.findAllByUserId(1L);
-        //then
+    void testFindAllByUserId() {
+        when(addressQueryHandler.findMany(anyString(), any(), eq(1L)))
+                .thenReturn(List.of(new Address(1L, 1L, "USA", "Times Square", "street", "New York", "NY", "12345", "123456789")));
+
+        List<Address> addresses = addressRepository.findAllByUserId(1L);
+        assertFalse(addresses.isEmpty());
         assertEquals(1, addresses.size());
+        verify(addressQueryHandler).findMany(anyString(), any(), eq(1L));
+    }
+
+    @Test
+    void testGetNextAddressId() {
+        when(addressQueryHandler.findMany(anyString(), any())).thenReturn(Arrays.asList(new Address(), new Address()));
+        Long nextId = addressRepository.getNextAddressId();
+        assertEquals(2L, nextId);
     }
 }

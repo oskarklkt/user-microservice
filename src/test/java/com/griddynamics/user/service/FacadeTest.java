@@ -5,10 +5,8 @@ import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.exception.AddressException;
 import com.griddynamics.user.exception.UserException;
-import com.griddynamics.user.repository.UserRepository;
 import com.griddynamics.user.validator.AddressValidator;
 import com.griddynamics.user.validator.UserValidator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,16 +47,12 @@ class FacadeTest {
         facade = new Facade(userService, addressService, userValidator, addressValidator, discountInfoService);
     }
 
-    @AfterEach
-    void tearDown() {
-        UserRepository.getUsers().clear();
-    }
 
     @Test
     void updateUser_ValidUser_ReturnsUpdatedUser() {
         // Setup
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
         when(userValidator.isUserDtoValid(userDto)).thenReturn(true);
         when(userService.updateUser(userId, userDto)).thenReturn(userDto);
 
@@ -75,7 +69,7 @@ class FacadeTest {
         // Setup
         Long userId = 1L;
         when(userValidator.isUserDtoValid(any())).thenReturn(true);
-        when(userValidator.isUserInDatabase(userId)).thenReturn(false);
+        when(userService.isUserInDatabase(userId)).thenReturn(false);
 
         // Execute & Verify
         assertThrows(com.griddynamics.user.exception.NoSuchElementException.class, () -> facade.updateUser(userId, userDto));
@@ -85,7 +79,7 @@ class FacadeTest {
     void deleteUser_UserExists_DeletesUser() {
         // Setup
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
 
         // Execute
         facade.deleteUser(userId);
@@ -98,7 +92,7 @@ class FacadeTest {
     void deleteUser_UserNotFound_ThrowsException() {
         // Setup
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(false);
+        when(userService.isUserInDatabase(userId)).thenReturn(false);
 
         // Execute & Verify
         assertThrows(com.griddynamics.user.exception.NoSuchElementException.class, () -> facade.deleteUser(userId));
@@ -108,7 +102,7 @@ class FacadeTest {
     void addAddress_ValidParameters_ReturnsAddedAddress() {
         // Setup
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
         when(addressValidator.validateAddress(addressDto)).thenReturn(true);
         when(addressService.addAddress(userId, addressDto)).thenReturn(addressDto);
 
@@ -135,7 +129,7 @@ class FacadeTest {
         // Setup
         Long userId = 1L;
         Long addressId = 2L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
         when(addressValidator.validateAddress(addressDto)).thenReturn(true);
         when(addressService.updateAddress(userId, addressId, addressDto)).thenReturn(addressDto);
 
@@ -152,7 +146,7 @@ class FacadeTest {
         // Setup
         Long userId = 1L;
         Long addressId = 2L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
 
         // Execute
         facade.deleteAddress(userId, addressId);
@@ -164,7 +158,7 @@ class FacadeTest {
     @Test
     void getUser() {
         //when
-        when(userValidator.isUserInDatabase(1L)).thenReturn(true);
+        when(userService.isUserInDatabase(1L)).thenReturn(true);
         facade.getUser(1L);
         //then
         Mockito.verify(userService).getUser(1L);
@@ -186,23 +180,6 @@ class FacadeTest {
         Mockito.verify(userService).getAllUsers();
     }
 
-    @Test
-    void getUserEmail() {
-        //when
-        when(userValidator.isUserInDatabase(1L)).thenReturn(true);
-        facade.getUserEmail(1L);
-        //then
-        Mockito.verify(userService).getUserEmail(1L);
-    }
-
-
-    @Test
-    void isEmailInDatabase() {
-        //when
-        facade.isEmailInDatabase("email");
-        //then
-        Mockito.verify(userService).isEmailInDatabase("email");
-    }
 
     @Test
     void saveUser_WhenUserDtoIsInvalid_ThrowsUserException() {
@@ -247,7 +224,7 @@ class FacadeTest {
     @Test
     void getAddresses_UserNotFound_ThrowsNoSuchElementException() {
         Long userId = 1L;
-        when(userValidator.isUserInDatabase(userId)).thenReturn(false);
+        when(userService.isUserInDatabase(userId)).thenReturn(false);
 
         assertThrows(com.griddynamics.user.exception.NoSuchElementException.class, () -> facade.getAddresses(userId),
                 "User not found");
@@ -258,7 +235,7 @@ class FacadeTest {
     void getAddresses_UserHasNoAddresses_ReturnsEmptyList() {
         Long userId = 1L;
         UserDto userDto = new UserDto("John", "Doe", Gender.MALE, "2001-04-25", "500204248",  "john.doe@example.com", "http://example.com");
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
         when(addressService.getAddresses(userId)).thenReturn(null);
         when(userService.getUser(userId)).thenReturn(userDto);
 
@@ -272,9 +249,9 @@ class FacadeTest {
     void getAddresses_UserHasAddresses_ReturnsAddressListWithDetails() {
         Long userId = 1L;
         AddressDto addressDto = new AddressDto();
-        List<AddressDto> addressList = Arrays.asList(addressDto);
+        List<AddressDto> addressList = List.of(addressDto);
         UserDto userDto = new UserDto("John", "Doe", Gender.MALE, "2001-04-25", "500204248",  "john.doe@example.com", "http://example.com");
-        when(userValidator.isUserInDatabase(userId)).thenReturn(true);
+        when(userService.isUserInDatabase(userId)).thenReturn(true);
         when(addressService.getAddresses(userId)).thenReturn(addressList);
         when(userService.getUser(userId)).thenReturn(userDto);
 

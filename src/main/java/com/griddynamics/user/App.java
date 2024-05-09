@@ -6,9 +6,6 @@ import com.griddynamics.user.common.UserQueryHandler;
 import com.griddynamics.user.controller.AddressController;
 import com.griddynamics.user.controller.DiscountController;
 import com.griddynamics.user.controller.UserController;
-import com.griddynamics.user.dto.AddressDto;
-import com.griddynamics.user.dto.UserDto;
-import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.dtoToModel.AddressMapper;
 import com.griddynamics.user.mapper.dtoToModel.UserMapper;
 import com.griddynamics.user.mapper.modelToDto.AddressDtoMapper;
@@ -39,13 +36,15 @@ public class App {
     @Generated
     public static void main(String[] args) {
         UserDtoMapper userDtoMapper = new UserDtoMapper();
+        UserQueryHandler userQueryHandler = new UserQueryHandler();
         ResultSetAddressMapper resultSetAddressMapper = new ResultSetAddressMapper();
         ResultSetUserMapper resultSetUserMapper = new ResultSetUserMapper();
         AddressDtoMapper addressDtoMapper = new AddressDtoMapper();
         UserMapper userMapper = new UserMapper();
         AddressMapper addressMapper = new AddressMapper();
-        UserRepository userRepository = new UserRepository();
-        AddressRepository addressRepository = new AddressRepository();
+        UserRepository userRepository = new UserRepository(userQueryHandler, resultSetUserMapper);
+        AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
+        AddressRepository addressRepository = new AddressRepository(addressQueryHandler, resultSetAddressMapper);
         ClientDiscountInfoDtoMapper clientDiscountInformationDtoMapper = new ClientDiscountInfoDtoMapper();
         UserService userService = new UserService(userRepository, userDtoMapper, userMapper);
         AddressService addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
@@ -53,81 +52,8 @@ public class App {
         UserController userController = new UserController(facade);
         AddressController addressController = new AddressController(facade);
         DiscountController discountController = new DiscountController(facade);
-        UserQueryHandler userQueryHandler = new UserQueryHandler();
-        AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
-        log.info("{}", userController.saveUser(UserDto.builder()
-                .name("Oskar")
-                .surname("Kowalski")
-                .email("Oskar@gmail.com")
-                .birthday("1999-01-01")
-                .profilePhotoUrl("https://www.google.com")
-                .phoneNumber("123456789")
-                .gender(Gender.MALE)
-                .build()));
-        log.info("{}", userController.getUser(1L));
-        log.info("{}", userController.getUserByEmail("Oskar@gmail.com"));
-        log.info("{}", userController.getAllUsers());
-        log.info("{}", userController.getUserEmail(1L));
-        log.info("{}", addressController.addAddress(1L, AddressDto.builder()
-                .city("Warsaw")
-                .streetAddress("Marszalkowska")
-                        .streetAddress2("1")
-                        .country("Poland")
-                        .stateProvinceRegion("Mazowieckie")
-                        .userId(1L)
-                        .name("Oskar")
-                        .surname("Klekot")
-                        .phoneNumber("500204248")
-                        .zipCode("42200")
-                        .build()));
-        log.info("{}", addressController.addAddress(1L, AddressDto.builder()
-                .city("Cracow")
-                .streetAddress("Marszalkowska")
-                .streetAddress2("1")
-                .country("Poland")
-                .stateProvinceRegion("Mazowieckie")
-                .userId(1L)
-                .name("Oskar")
-                .surname("Klekot")
-                .phoneNumber("500204248")
-                .zipCode("42200")
-                .build()));
-        log.info("{}", addressController.getAddresses(1L));
-        addressController.deleteAddress(1L, 1L);
-        log.info("{}", addressController.getAddresses(1L));
-        log.info("{}", discountController.getClientDiscountInfo(1L));
-        discountController.setUserVip(1L);
-        log.info("{}", discountController.getClientDiscountInfo(1L));
-
-        /*
-        Database.execute("INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                "test", "tester", "M", "1990-01-01", "123456789", "test@ex.com", "https://www.google.com", "2021-01-01", "BASIC");
-
-        Database.execute("INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                preparedStatement -> {
-                    try {
-                        preparedStatement.setString(1, "test2");
-                        preparedStatement.setString(2, "tester2");
-                        preparedStatement.setString(3, "M");
-                        preparedStatement.setString(4, "1990-01-01");
-                        preparedStatement.setString(5, "123456789");
-                        preparedStatement.setString(6, "test@ex2.com");
-                        preparedStatement.setString(7, "https://www.google.com");
-                        preparedStatement.setString(8, "2021-01-01");
-                        preparedStatement.setString(9, "BASIC");
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        */
 
         Dotenv dotenv = Dotenv.load();
         Database.initialize(dotenv.get("DB_URL"), dotenv.get("DB_USER"), dotenv.get("DB_PASSWORD"));
-        log.info("{}", userQueryHandler.findOne("SELECT * FROM users WHERE id = ?", resultSetUserMapper, 1L));
-        log.info("{}", addressQueryHandler.findOne("SELECT * FROM addresses WHERE id = ?", resultSetAddressMapper, 1L));
-        log.info("{}", userQueryHandler.findMany("SELECT * FROM users", resultSetUserMapper));
-        log.info("{}", addressQueryHandler.findMany("SELECT * FROM addresses", resultSetAddressMapper));
     }
 }

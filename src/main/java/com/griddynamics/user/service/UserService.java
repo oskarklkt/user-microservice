@@ -20,7 +20,7 @@ public class UserService {
 
 
     public UserDto saveUser(UserDto userDto) {
-        User user = userMapper.apply(UserRepository.getNextId(), userDto);
+        User user = userMapper.apply(userRepository.getNextId(), userDto);
         userRepository.save(user);
         return userDto;
     }
@@ -59,7 +59,11 @@ public class UserService {
     }
 
     public boolean isEmailInDatabase(String email) {
-        return userRepository.isEmailInDatabase(email);
+        return userRepository.getUserByEmail(email).isPresent();
+    }
+
+    public boolean isUserInDatabase(Long userId) {
+        return userRepository.getUser(userId).isPresent();
     }
 
 }

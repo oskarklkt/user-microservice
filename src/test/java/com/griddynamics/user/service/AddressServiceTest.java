@@ -6,7 +6,6 @@ import com.griddynamics.user.mapper.dtoToModel.AddressMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,34 +40,21 @@ class AddressServiceTest {
         address = new Address(1L, 1L, "Poland", "Warsaw", "00-001", "Marszałkowska", "1", "1", "1");
     }
 
-    @AfterEach
-    void tearDown() {
-        UserRepository.getUsers().clear();
-    }
 
 
 
     @Test
     void deleteAddress() {
-        // when
-        when(userRepository.isUserInDatabase(userId)).thenReturn(true);
+
         // then
         assertTrue(addressService.deleteAddress(userId, 1L));
     }
 
-    @Test
-    void deleteNonExistingAddress() {
-        // when
-        when(userRepository.isUserInDatabase(userId)).thenReturn(false);
-        // then
-        assertFalse(addressService.deleteAddress(userId, 1L));
-    }
 
     @Test
     void addAddress_Success_ReturnsAddressDto() {
         // Given
-        when(addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto)).thenReturn(address);
-        when(userRepository.isUserInDatabase(userId)).thenReturn(true);
+        when(addressMapper.apply(addressRepository.getNextAddressId(), userId, addressDto)).thenReturn(address);
 
         // When
        addressService.addAddress(userId, addressDto);
@@ -82,7 +68,6 @@ class AddressServiceTest {
         // Given
         Long addressId = 2L;
         when(addressMapper.apply(addressId, userId, addressDto)).thenReturn(address);
-        when(userRepository.isUserInDatabase(userId)).thenReturn(true);
 
         // When
         addressService.updateAddress(userId, addressId, addressDto);

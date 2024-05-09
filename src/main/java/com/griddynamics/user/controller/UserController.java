@@ -51,7 +51,7 @@ public class UserController {
 
     public String getUserEmail(Long userId) {
         try {
-            return facade.getUserEmail(userId);
+            return facade.getUser(userId).getEmail();
         } catch (BaseException e) {
             log.error("{} | {}", e.getMessage(), e.getStatusCode());
         }

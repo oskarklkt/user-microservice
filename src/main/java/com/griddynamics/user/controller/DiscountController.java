@@ -2,6 +2,7 @@ package com.griddynamics.user.controller;
 
 import com.griddynamics.user.dto.ClientDiscountInfoDto;
 import com.griddynamics.user.exception.BaseException;
+import com.griddynamics.user.exception.NoSuchElementException;
 import com.griddynamics.user.service.Facade;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class DiscountController {
     public void setUserVip(Long userId) {
         try {
             facade.setUserVip(userId);
-        } catch (BaseException e) {
+        } catch (NoSuchElementException e) {
             log.error("{} | {}", e.getMessage(), e.getStatusCode());
         }
     }

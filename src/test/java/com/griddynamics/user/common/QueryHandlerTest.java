@@ -1,6 +1,8 @@
 package com.griddynamics.user.common;
 
+import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
+import com.griddynamics.user.model.Address;
 import com.griddynamics.user.model.User;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.AfterAll;
@@ -17,6 +19,7 @@ class QueryHandlerTest {
     AddressQueryHandler addressQueryHandler = new AddressQueryHandler();
     UserQueryHandler userQueryHandler = new UserQueryHandler();
     ResultSetUserMapper resultSetUserMapper = new ResultSetUserMapper();
+    ResultSetAddressMapper resultSetAddressMapper = new ResultSetAddressMapper();
 
     @BeforeAll
     static void setUp() {
@@ -88,5 +91,17 @@ class QueryHandlerTest {
     void findMany() {
         List<User> users = userQueryHandler.findMany("SELECT * FROM users", resultSetUserMapper);
         assertEquals("John",users.get(0).getName());
+    }
+
+    @Test
+    void findOneAddress() {
+        String city = addressQueryHandler.findOne("SELECT * FROM addresses WHERE id = ?", resultSetAddressMapper, 1L).getCity();
+        assertEquals("New York", city);
+    }
+
+    @Test
+    void findManyAddresses() {
+        List<Address> addresses = addressQueryHandler.findMany("SELECT * FROM addresses", resultSetAddressMapper);
+        assertEquals(2, addresses.size());
     }
 }

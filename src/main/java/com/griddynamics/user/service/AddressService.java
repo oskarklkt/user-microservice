@@ -22,24 +22,20 @@ public class AddressService {
     private final UserRepository userRepository;
 
     public AddressDto addAddress(Long userId, AddressDto addressDto) {
-        Address address = addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto);
+        Address address = addressMapper.apply(addressRepository.getNextAddressId(), userId, addressDto);
         addressRepository.save(userId, address);
         return addressDto;
     }
 
     public AddressDto updateAddress(Long userId, Long addressId, AddressDto addressDto) {
         addressRepository.deleteAddress(userId, addressId);
-        addressRepository.save(userId, addressMapper.apply(AddressRepository.getNextAddressId(), userId, addressDto));
+        addressRepository.save(userId, addressMapper.apply(addressRepository.getNextAddressId(), userId, addressDto));
         return addressDto;
     }
 
     public boolean deleteAddress(Long userId, Long addressId) {
-        if (!userRepository.isUserInDatabase(userId)) {
-            return false;
-        } else {
-            addressRepository.deleteAddress(userId, addressId);
-            return true;
-        }
+        addressRepository.deleteAddress(userId, addressId);
+        return true;
     }
 
     public List<AddressDto> getAddresses(Long userId) {

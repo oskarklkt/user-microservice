@@ -1,64 +1,65 @@
 package com.griddynamics.user.repository;
 
 
+import com.griddynamics.user.common.UserQueryHandler;
 import com.griddynamics.user.enumeration.ClientType;
+import com.griddynamics.user.enumeration.Gender;
+import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
 import com.griddynamics.user.model.User;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 import java.util.*;
 
+@AllArgsConstructor
 public class UserRepository {
-    @Getter
-    private static final Map<Long, User> users = new HashMap<>();
+
+    private final UserQueryHandler userQueryHandler;
+    private final ResultSetUserMapper resultSetUserMapper;
+
+    private final static String INSERT_USER_QUERY = "INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final static String GET_USER_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
+    private final static String GET_USER_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
+    private final static String GET_ALL_USERS_QUERY = "SELECT * FROM users";
+    private final static String DELETE_USER_QUERY = "DELETE FROM users WHERE id = ?";
+    private final static String UPDATE_USER_QUERY = "UPDATE users SET name = ?, surname = ?, gender = ?, birthday = ?, phone_number = ?, email = ?, profile_photo_url = ? WHERE id = ?";
+    private final static String SET_USER_VIP_QUERY = "UPDATE users SET client_type = ? WHERE id = ?";
 
     public void save(User user) {
-        user.setId(getNextId());
-        user.setDateOfAccountCreation(String.valueOf(java.time.LocalDate.now()));
-        user.setClientType(ClientType.BASIC);
-        users.put(user.getId(), user);
+        userQueryHandler.execute(INSERT_USER_QUERY,
+                user.getName(), user.getSurname(), user.getGender().equals(Gender.FEMALE) ? "F" : "M",
+                user.getBirthday(), user.getPhoneNumber(), user.getEmail(),
+                user.getProfilePhotoUrl(), String.valueOf(java.time.LocalDate.now()), ClientType.BASIC.toString());
     }
 
     public Optional<User> getUser(Long id) {
-        return Optional.ofNullable(users.get(id));
+        return Optional.ofNullable(userQueryHandler.findOne(GET_USER_BY_ID_QUERY, resultSetUserMapper, id));
     }
 
     public Optional<User> getUserByEmail(String email) {
-        return users.values().stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst();
+        return Optional.ofNullable(userQueryHandler.findOne(GET_USER_BY_EMAIL_QUERY, resultSetUserMapper, email));
     }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(users.values());
+        return userQueryHandler.findMany(GET_ALL_USERS_QUERY, resultSetUserMapper);
     }
 
     public void deleteUser(Long userId) {
-        users.remove(userId);
+        userQueryHandler.execute(DELETE_USER_QUERY, userId);
     }
 
     public User updateUser(Long userId, User user) {
-        users.remove(userId);
-        user.setId(userId);
-        users.put(userId, user);
+        userQueryHandler.execute(UPDATE_USER_QUERY,
+                user.getName(), user.getSurname(), user.getGender().equals(Gender.FEMALE) ? "F" : "M", user.getBirthday(), user.getPhoneNumber(), user.getEmail(), user.getProfilePhotoUrl(), userId);
         return user;
     }
 
-    public boolean isEmailInDatabase(String email) {
-        return users.values().stream()
-                .anyMatch(user -> user.getEmail().equals(email));
-    }
-
-    public boolean isUserInDatabase(Long userId) {
-        return users.containsKey(userId);
-    }
-
-    public static Long getNextId() {
-        return users.size() + 1L;
+    public Long getNextId() {
+        return (long) (userQueryHandler.findMany(GET_ALL_USERS_QUERY, resultSetUserMapper).size() + 1);
     }
 
     public void setUserVip(Long userId) {
-        User user = users.get(userId);
-        user.setClientType(ClientType.VIP);
-        users.put(userId, user);
+        userQueryHandler.execute(SET_USER_VIP_QUERY, ClientType.VIP.toString(), userId);
     }
+
 }

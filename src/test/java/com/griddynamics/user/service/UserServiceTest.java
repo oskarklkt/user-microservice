@@ -3,7 +3,6 @@ package com.griddynamics.user.service;
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
-import com.griddynamics.user.mapper.modelToDto.ClientDiscountInfoDtoMapper;
 import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
 import com.griddynamics.user.mapper.dtoToModel.UserMapper;
 import com.griddynamics.user.model.User;
@@ -75,17 +74,6 @@ class UserServiceTest {
     void deleteUser() {
         userService.deleteUser(1L);
         verify(userRepository, Mockito.times(1)).deleteUser(any());
-    }
-
-
-
-    @Test
-    void isEmailInDatabase() {
-        //when
-        when(userRepository.isEmailInDatabase("test")).thenReturn(true);
-        userService.isEmailInDatabase("test");
-        //then
-        verify(userRepository, Mockito.times(1)).isEmailInDatabase(any());
     }
 
 

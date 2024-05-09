@@ -35,7 +35,7 @@ public class Facade {
     }
 
     public UserDto getUser(Long id) {
-        if (!userValidator.isUserInDatabase(id)) {
+        if (!userService.isUserInDatabase(id)) {
             throw new NoSuchElementException("User not found");
         }
         return userService.getUser(id);
@@ -49,15 +49,8 @@ public class Facade {
         return userService.getAllUsers();
     }
 
-    public String getUserEmail(Long userId) {
-        if (!userValidator.isUserInDatabase(userId)) {
-            throw new NoSuchElementException("User not found");
-        }
-        return userService.getUserEmail(userId);
-    }
-
     public void deleteUser(Long userId) {
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         userService.deleteUser(userId);
@@ -67,22 +60,17 @@ public class Facade {
         if (!userValidator.isUserDtoValid(userDto)) {
             throw new UserException("User data is not valid");
         }
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return userService.updateUser(userId, userDto);
-    }
-
-
-    public boolean isEmailInDatabase(String email) {
-        return userService.isEmailInDatabase(email);
     }
 
     public AddressDto addAddress(Long userId, AddressDto addressDto) {
         if (!addressValidator.validateAddress(addressDto)) {
             throw new AddressException("Address data is not valid");
         }
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return addressService.addAddress(userId, addressDto);
@@ -92,21 +80,21 @@ public class Facade {
         if (!addressValidator.validateAddress(addressDto)) {
             throw new AddressException("Address data is not valid");
         }
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return addressService.updateAddress(userId, addressId, addressDto);
     }
 
     public void deleteAddress(Long userId, Long addressId) {
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         addressService.deleteAddress(userId, addressId);
     }
 
     public List<AddressDto> getAddresses(Long userId) {
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         List<AddressDto> addressesDto = Optional.ofNullable(addressService.getAddresses(userId)).orElse(Collections.emptyList());
@@ -117,14 +105,14 @@ public class Facade {
     }
 
     public ClientDiscountInfoDto getClientDiscountInfo(Long userId) {
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         return discountInfoService.getClientDiscountInfo(userId);
     }
 
     public void setUserVip(Long userId) {
-        if (!userValidator.isUserInDatabase(userId)) {
+        if (!userService.isUserInDatabase(userId)) {
             throw new NoSuchElementException("User not found");
         }
         discountInfoService.setUserVip(userId);

@@ -15,12 +15,13 @@ import java.util.function.Function;
 
 @Getter
 @Setter
+
 public abstract class QueryHandler<T> {
 
     @SneakyThrows
     public void execute(String query, Object... args) {
         try (Connection connection = Database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);
             }
@@ -31,7 +32,7 @@ public abstract class QueryHandler<T> {
     @SneakyThrows
     public void execute(String query, Consumer<PreparedStatement> statementConsumer) {
         try (Connection connection = Database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             statementConsumer.accept(preparedStatement);
             preparedStatement.execute();
         }
@@ -40,7 +41,7 @@ public abstract class QueryHandler<T> {
     @SneakyThrows
     public T findOne(String query, Function<ResultSet, T> mapper, Object... args) {
         try (Connection connection = Database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);
             }
@@ -56,7 +57,7 @@ public abstract class QueryHandler<T> {
     @SneakyThrows
     public List<T> findMany(String query, Function<ResultSet, T> mapper, Object... args) {
         try (Connection connection = Database.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);
             }
@@ -68,5 +69,4 @@ public abstract class QueryHandler<T> {
             return res;
         }
     }
-
 }

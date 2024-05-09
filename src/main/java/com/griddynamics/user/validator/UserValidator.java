@@ -1,7 +1,6 @@
 package com.griddynamics.user.validator;
 
 import com.griddynamics.user.dto.UserDto;
-import com.griddynamics.user.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 
 public class UserValidator {
@@ -33,12 +32,7 @@ public class UserValidator {
     }
 
     private boolean isGenderValid(String gender) {
-        return !StringUtils.isEmpty(gender)&& (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female"));
-    }
-
-    //TODO: CREATE ISCONTAINS IN USERREPOSITORY INSTEAD OF THIS METHOD
-    public boolean isUserInDatabase(Long userId) {
-        return UserRepository.getUsers().containsKey(userId);
+        return !StringUtils.isEmpty(gender) && (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female"));
     }
 
     public boolean isUserDtoValid(UserDto userDto) {
