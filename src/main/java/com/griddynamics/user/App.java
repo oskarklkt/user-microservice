@@ -56,5 +56,6 @@ public class App {
 
         Dotenv dotenv = Dotenv.load();
         Database.initialize(dotenv.get("DB_URL"), dotenv.get("DB_USER"), dotenv.get("DB_PASSWORD"));
+
     }
 }
