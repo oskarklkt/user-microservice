@@ -6,6 +6,7 @@ import com.griddynamics.user.mapper.dtoToModel.AddressMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.repository.AddressRepository;
 import com.griddynamics.user.repository.UserRepository;
+import com.griddynamics.user.service.implementations.AddressServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 class AddressServiceTest {
 
-    AddressService addressService;
+    AddressServiceImpl addressService;
     AddressRepository addressRepository;
     UserRepository userRepository;
     Long userId;
@@ -35,7 +36,7 @@ class AddressServiceTest {
         addressDto = new AddressDto();
         addressMapper = Mockito.mock(AddressMapper.class);
         addressDtoMapper = Mockito.mock(AddressDtoMapper.class);
-        addressService = new AddressService(addressRepository, addressDtoMapper, addressMapper, userRepository);
+        addressService = new AddressServiceImpl(addressRepository, addressDtoMapper, addressMapper, userRepository);
         addressDtoMapper = Mockito.mock(AddressDtoMapper.class);
         address = new Address(1L, 1L, "Poland", "Warsaw", "00-001", "Marszałkowska", "1", "1", "1");
     }

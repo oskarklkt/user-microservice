@@ -6,11 +6,13 @@ import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.model.User;
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.Generated;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Generated
 public class Main {
     private static final UserDtoMapper userDtoMapper = new UserDtoMapper();
     private static final QueryHandler<User> userQueryHandler = new QueryHandler<>();

@@ -6,9 +6,11 @@ import com.griddynamics.user.exception.NoSuchElementException;
 import com.griddynamics.user.service.Facade;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 @Slf4j
 @AllArgsConstructor
+@Controller
 public class DiscountController {
     private final Facade facade;
 

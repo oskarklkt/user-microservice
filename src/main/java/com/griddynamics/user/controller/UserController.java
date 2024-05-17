@@ -5,11 +5,13 @@ import com.griddynamics.user.exception.BaseException;
 import com.griddynamics.user.service.Facade;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
+@Controller
 public class UserController {
     private final Facade facade;
 

@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.griddynamics.user.dto.ClientDiscountInfoDto;
-import com.griddynamics.user.service.Facade;
+import com.griddynamics.user.service.implementations.FacadeImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DiscountControllerTest {
 
     @Mock
-    private Facade facade;
+    private FacadeImpl facade;
 
 
     @InjectMocks

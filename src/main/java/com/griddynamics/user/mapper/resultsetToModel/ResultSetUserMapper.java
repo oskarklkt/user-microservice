@@ -4,10 +4,12 @@ import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.model.User;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.util.function.Function;
 
+@Component
 public class ResultSetUserMapper implements Function<ResultSet, User> {
     @Override
     @SneakyThrows

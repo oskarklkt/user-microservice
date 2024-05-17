@@ -2,11 +2,14 @@ package tasks.isolation;
 
 import com.griddynamics.user.common.Database;
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 
 @Slf4j
+
+@Generated
 public class Main {
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();

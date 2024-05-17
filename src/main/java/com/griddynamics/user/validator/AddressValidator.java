@@ -2,7 +2,9 @@ package com.griddynamics.user.validator;
 
 import com.griddynamics.user.dto.AddressDto;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AddressValidator {
     private static final String PHONE_NUMBER_REGEX = "^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?(-?\\s?[0-9])+$";
     private static final String ZIP_CODE_REGEX = "^\\d{5}$";

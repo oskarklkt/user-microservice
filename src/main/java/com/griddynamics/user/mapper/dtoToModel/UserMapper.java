@@ -2,9 +2,11 @@ package com.griddynamics.user.mapper.dtoToModel;
 
 import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.function.BiFunction;
 
+@Component
 public class UserMapper implements BiFunction<Long, UserDto, User> {
     @Override
     public User apply(Long id, UserDto userDto) {

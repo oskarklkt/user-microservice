@@ -3,9 +3,11 @@ import com.griddynamics.user.common.QueryHandler;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.model.Address;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
-
+//Will become @Repository later
+@Component
 @AllArgsConstructor
 public class AddressRepository {
 

@@ -7,6 +7,7 @@ import com.griddynamics.user.mapper.modelToDto.UserDtoMapper;
 import com.griddynamics.user.mapper.dtoToModel.UserMapper;
 import com.griddynamics.user.model.User;
 import com.griddynamics.user.repository.UserRepository;
+import com.griddynamics.user.service.implementations.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,14 +20,14 @@ import static org.mockito.Mockito.when;
 
 class UserServiceTest {
     UserRepository userRepository;
-    UserService userService;
+    UserServiceImpl userService;
     UserDto userDto;
     User user;
 
     @BeforeEach
     void setUp() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(userRepository, new UserDtoMapper(), new UserMapper());
+        userService = new UserServiceImpl(userRepository, new UserDtoMapper(), new UserMapper());
         userDto = new UserDto("test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url");
         user = new User(1L, "test33", "Tester", Gender.MALE, "01.01.2000", "+123456789", "test@gmail.com", "url", "01.01.2021", ClientType.BASIC);
     }

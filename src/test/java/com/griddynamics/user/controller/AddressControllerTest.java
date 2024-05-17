@@ -1,7 +1,7 @@
 package com.griddynamics.user.controller;
 
 import com.griddynamics.user.dto.AddressDto;
-import com.griddynamics.user.service.Facade;
+import com.griddynamics.user.service.implementations.FacadeImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 class AddressControllerTest {
 
     @Mock
-    private Facade facade;
+    private FacadeImpl facade;
 
     @InjectMocks
     private AddressController addressController;

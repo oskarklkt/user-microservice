@@ -2,10 +2,12 @@ package com.griddynamics.user.mapper.resultsetToModel;
 
 import com.griddynamics.user.model.Address;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.util.function.Function;
 
+@Component
 public class ResultSetAddressMapper implements Function<ResultSet, Address> {
     @Override
     @SneakyThrows

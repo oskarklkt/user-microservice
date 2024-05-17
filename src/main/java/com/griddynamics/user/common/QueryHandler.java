@@ -4,6 +4,7 @@ import com.griddynamics.user.exception.TooManyResultsException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.util.function.Function;
 @Getter
 @Setter
 
+@Component
 public class QueryHandler<T> {
 
     @SneakyThrows

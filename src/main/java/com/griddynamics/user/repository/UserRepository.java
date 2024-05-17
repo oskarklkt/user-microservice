@@ -7,9 +7,12 @@ import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
 import com.griddynamics.user.model.User;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+//Will become @Repository later
+@Component
 @AllArgsConstructor
 public class UserRepository {
 

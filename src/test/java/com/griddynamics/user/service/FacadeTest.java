@@ -5,6 +5,10 @@ import com.griddynamics.user.dto.UserDto;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.exception.AddressException;
 import com.griddynamics.user.exception.UserException;
+import com.griddynamics.user.service.implementations.AddressServiceImpl;
+import com.griddynamics.user.service.implementations.DiscountInfoServiceImpl;
+import com.griddynamics.user.service.implementations.FacadeImpl;
+import com.griddynamics.user.service.implementations.UserServiceImpl;
 import com.griddynamics.user.validator.AddressValidator;
 import com.griddynamics.user.validator.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,24 +31,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class FacadeTest {
 
     @Mock
-    UserService userService;
+    UserServiceImpl userService;
     @Mock
-    AddressService addressService;
+    AddressServiceImpl addressService;
     @Mock
     UserDto userDto;
     @Mock
     AddressDto addressDto;
-    Facade facade;
+    FacadeImpl facade;
     @Mock
     UserValidator userValidator;
     @Mock
     AddressValidator addressValidator;
     @Mock
-    DiscountInfoService discountInfoService;
+    DiscountInfoServiceImpl discountInfoService;
 
     @BeforeEach
     void setUp() {
-        facade = new Facade(userService, addressService, userValidator, addressValidator, discountInfoService);
+        facade = new FacadeImpl(userService, addressService, userValidator, addressValidator, discountInfoService);
     }
 
 
