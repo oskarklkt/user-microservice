@@ -1,5 +1,6 @@
 package com.griddynamics.user;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Generated;
