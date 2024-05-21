@@ -3,7 +3,7 @@ package com.griddynamics.user.repository;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.griddynamics.user.common.QueryHandler;
+import com.griddynamics.user.datasource.QueryHandler;
 import com.griddynamics.user.model.Address;
 
 import org.junit.jupiter.api.Test;

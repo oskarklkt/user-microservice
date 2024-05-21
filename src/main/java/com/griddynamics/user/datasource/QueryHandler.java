@@ -1,6 +1,7 @@
-package com.griddynamics.user.common;
+package com.griddynamics.user.datasource;
 
 import com.griddynamics.user.exception.TooManyResultsException;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -18,11 +19,14 @@ import java.util.function.Function;
 @Setter
 
 @Component
+@AllArgsConstructor
 public class QueryHandler<T> {
+
+    private Database database;
 
     @SneakyThrows
     public void execute(String query, Object... args) {
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);
@@ -33,7 +37,7 @@ public class QueryHandler<T> {
 
     @SneakyThrows
     public void execute(String query, Consumer<PreparedStatement> statementConsumer) {
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             statementConsumer.accept(preparedStatement);
             preparedStatement.execute();
@@ -42,7 +46,7 @@ public class QueryHandler<T> {
 
     @SneakyThrows
     public T findOne(String query, Function<ResultSet, T> mapper, Object... args) {
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);
@@ -58,7 +62,7 @@ public class QueryHandler<T> {
 
     @SneakyThrows
     public List<T> findMany(String query, Function<ResultSet, T> mapper, Object... args) {
-        try (Connection connection = Database.getConnection();
+        try (Connection connection = database.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             for (int i = 0; i < args.length; i++) {
                 preparedStatement.setObject(i + 1, args[i]);

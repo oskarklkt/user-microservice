@@ -1,7 +1,5 @@
 package com.griddynamics.user;
 
-import com.griddynamics.user.common.Database;
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Generated;
@@ -20,7 +18,5 @@ public class App {
     @Generated
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
-        Dotenv dotenv = Dotenv.load();
-        Database.initialize(dotenv.get("DB_URL"), dotenv.get("DB_USER"), dotenv.get("DB_PASSWORD"));
     }
 }

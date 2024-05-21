@@ -1,7 +1,7 @@
 package com.griddynamics.user.repository;
 
 
-import com.griddynamics.user.common.QueryHandler;
+import com.griddynamics.user.datasource.QueryHandler;
 import com.griddynamics.user.enumeration.ClientType;
 import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-//Will become @Repository later
+//TODO change to @Repository when we will start Spring data JPA
 @Component
 @AllArgsConstructor
 public class UserRepository {
