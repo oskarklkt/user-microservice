@@ -1,5 +1,8 @@
 --- Purpose: This script is used to create tables and populate them
 -- with some data for testing purposes.
+
+DROP TABLE users;
+DROP TABLE addresses;
 CREATE TABLE users
 (
     id                    BIGINT AUTO_INCREMENT PRIMARY KEY,

@@ -3,11 +3,11 @@ import com.griddynamics.user.datasource.QueryHandler;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.model.Address;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
-//TODO change to @Repository when we will start Spring data JPA
-@Component
+
+@Repository
 @AllArgsConstructor
 public class AddressRepository {
 

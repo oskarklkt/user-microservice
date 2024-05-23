@@ -22,7 +22,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class QueryHandler<T> {
 
-    private Database database;
+    private final Database database;
 
     @SneakyThrows
     public void execute(String query, Object... args) {

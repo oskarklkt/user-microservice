@@ -7,12 +7,11 @@ import com.griddynamics.user.enumeration.Gender;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
 import com.griddynamics.user.model.User;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-//TODO change to @Repository when we will start Spring data JPA
-@Component
+@Repository
 @AllArgsConstructor
 public class UserRepository {
 
