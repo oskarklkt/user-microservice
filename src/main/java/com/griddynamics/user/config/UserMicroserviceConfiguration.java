@@ -2,6 +2,7 @@ package com.griddynamics.user.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,5 +33,12 @@ public class UserMicroserviceConfiguration {
     @Primary
     public HikariDataSource hikariDataSource(HikariConfig config) {
         return new HikariDataSource(config);
+    }
+
+    @Bean
+    public Dotenv dotenv() {
+        return Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
     }
 }

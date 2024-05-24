@@ -28,9 +28,9 @@ class UserRepositoryTest {
 
     @Test
     void testSave() {
-        User user = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2024-05-09", ClientType.BASIC);
+        User user = new User(1L, "John", "Doe", Gender.MALE, "1990-01-01", "123456789", "john.doe@example.com", "https://image.url", "2024-05-23", ClientType.BASIC);
         userRepository.save(user);
-        verify(userQueryHandler).execute(eq("INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"), eq("John"), eq("Doe"), eq("M"), eq("1990-01-01"), eq("123456789"), eq("john.doe@example.com"), eq("https://image.url"), eq("2024-05-23"), eq("BASIC"));
+        verify(userQueryHandler).execute(eq("INSERT INTO users (name, surname, gender, birthday, phone_number, email, profile_photo_url, account_creation_date, client_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"), eq("John"), eq("Doe"), eq("M"), eq("1990-01-01"), eq("123456789"), eq("john.doe@example.com"), eq("https://image.url"), eq("2024-05-24"), eq("BASIC"));
     }
 
     @Test

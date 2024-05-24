@@ -6,7 +6,10 @@ import com.griddynamics.user.mapper.resultsetToModel.ResultSetAddressMapper;
 import com.griddynamics.user.mapper.resultsetToModel.ResultSetUserMapper;
 import com.griddynamics.user.model.Address;
 import com.griddynamics.user.model.User;
+
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
